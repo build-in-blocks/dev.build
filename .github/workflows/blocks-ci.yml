@@ -1,0 +1,19 @@
+name: Blocks CI
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  call-shared-logic:
+    # -----------------------------------------------------------------
+    # This points to the shared library repository's "central" workflow
+    # -----------------------------------------------------------------
+    uses: build-in-blocks/dev.setup/.github/workflows/central-blocks-ci.yml@v1.0.2
+    with:
+      run_tests: true
+      # -------------------------------------------------
+      # You can pass multiple scripts separated by spaces
+      # -------------------------------------------------
+      extra_scripts: ""
