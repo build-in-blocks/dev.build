@@ -1,0 +1,53 @@
+{
+  "name": "@build-in-blocks/dev.build",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "eslint:lint": "eslint .",
+    "prettier:format": "prettier --write \"**/*.{mjs,js,ts,css,html}\"",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@build-in-blocks/dev.setup": "^1.0.2",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.3",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.3",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0"
+  },
+  "homepage": "https://github.com/build-in-blocks/dev.build#readme",
+  "bugs": {
+    "url": "https://github.com/build-in-blocks/product-issue-reports/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/build-in-blocks/dev.build.git"
+  },
+  "license": "AGPL-3.0",
+  "author": "Mary Obiagba",
+  "contributors": [
+    "Find list of contributors in project README: https://github.com/build-in-blocks/dev.build?tab=readme-ov-file#contributors"
+  ],
+  "keywords": [
+    "@build-in-blocks",
+    "@build-in-blocks/dev.build",
+    "dev.build",
+    "build-in-blocks",
+    "blocks",
+    "framework",
+    "library",
+    "package",
+    "",
+    "typescript",
+    "javascript",
+    "node"
+  ],
+  "files": []
+}
