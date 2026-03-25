@@ -5,7 +5,7 @@ import blocksDevSetupConfig from '@build-in-blocks/dev.setup';
 
 // NOTE: Change folder name to where your ts files reside
 const TARGET_FOLDER = '.';
-const TARGET_FILES = `${TARGET_FOLDER}/**/*.{ts,js,mjs,tsx}`;
+const TARGET_FILES = `${TARGET_FOLDER}/**/*.{mjs,ts,js,tsx}`;
 
 export default defineConfig([
   //------------------------------------------------------------------
