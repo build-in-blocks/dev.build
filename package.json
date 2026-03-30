@@ -2,7 +2,11 @@
   "name": "@build-in-blocks/dev.build",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "@build-in-blocks/dev.build": "bin/pkg.internal.cli.js",
+    "blocks.pkg.dev.build": "bin/pkg.internal.cli.js"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -10,6 +14,15 @@
     "eslint:lint": "eslint .",
     "prettier:format": "prettier --write \"**/*.{mjs,js,ts,css,html}\"",
     "prepare": "husky"
+  },
+  "dependencies": {
+    "html-webpack-plugin": "^5.6.6",
+    "terser-webpack-plugin": "^5.4.0",
+    "ts-loader": "^9.5.4",
+    "ts-node": "^10.9.2",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.2",
+    "webpack-merge": "^6.0.1"
   },
   "devDependencies": {
     "@build-in-blocks/dev.setup": "^1.0.2",
@@ -19,8 +32,10 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.3.3",
     "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.9.3"
   },
   "homepage": "https://github.com/build-in-blocks/dev.build#readme",
   "bugs": {
@@ -49,5 +64,10 @@
     "javascript",
     "node"
   ],
-  "files": []
+  "files": [
+    "bin/",
+    "config.web/",
+    "tsconfig.base.json",
+    "README.md"
+  ]
 }
