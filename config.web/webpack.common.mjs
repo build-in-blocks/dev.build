@@ -117,12 +117,16 @@ const customMetaDataPluginForUserApp = {
           stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
         },
         () => {
-          const metadata = JSON.stringify({
-            name: userAppPkgJSON.name,
-            version: userAppPkgJSON.version,
-            buildDate: new Date().toISOString(),
-            environment: compiler.options.mode
-          }, null, 2);
+          const metadata = JSON.stringify(
+            {
+              name: userAppPkgJSON.name,
+              version: userAppPkgJSON.version,
+              buildDate: new Date().toISOString(),
+              environment: compiler.options.mode,
+            },
+            null,
+            2,
+          );
 
           // 3. Use emitAsset instead of direct assignment
           compilation.emitAsset('metadata.json', new compiler.webpack.sources.RawSource(metadata));
