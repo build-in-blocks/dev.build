@@ -1,21 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 //-
-import {
-  blocksConfigTemplateCode,
-  getCurrentFolderContent,
-} from '../helpers/resources.helpers.js';
+import { blocksConfigTemplateCode, getCurrentFolderContent } from '../helpers/resources.helpers.js';
 import { _default } from '../helpers/internal.helpers.js';
 
-export const validateMainEntryFilePathInUserApp = ({
-  userAppName,
-  userAppRoot,
-  userAppSrcFolderRoot,
-  userAppEntryFileName,
-  blocksConfigFileName,
-  blocksConfigSrcFolderRoot,
-  blocksConfigEntryFileName,
-}) => {
+export const validateMainEntryFilePathInUserApp = ({ userAppName, userAppRoot, userAppSrcFolderRoot, userAppEntryFileName, blocksConfigFileName, blocksConfigSrcFolderRoot, blocksConfigEntryFileName }) => {
   const hasFileExtension = ({ filePath }) => path.extname(filePath).length > 0;
   const hasTSfileExtension = ({ filePath }) => {
     const extension = path.extname(filePath);
@@ -35,37 +24,24 @@ export const validateMainEntryFilePathInUserApp = ({
   // => (Initially) check the user app to see if a main entry file (path that matches any of the MIX above) is present.
   // => Return error - if a main entry file (path that matches any of the MIX above) is not present in the user app.
   //------------------------------------------------------------------
-  const entryFilePathHasTSext =
-    hasFileExtension({ filePath: mainFile }) &&
-    hasTSfileExtension({ filePath: mainFile });
+  const entryFilePathHasTSext = hasFileExtension({ filePath: mainFile }) && hasTSfileExtension({ filePath: mainFile });
   const entryFilePathWithTSextension = `${mainFile}${entryFilePathHasTSext ? '' : _default.fileExtension}`;
-  const fullEntryFilePath = path.resolve(
-    userAppRoot,
-    entryFilePathWithTSextension,
-  );
+  const fullEntryFilePath = path.resolve(userAppRoot, entryFilePathWithTSextension);
   //-
-  const srcFolderReference = blocksConfigSrcFolderRoot
-    ? `Root ${blocksConfigFileName} file reference => srcFolderRoot: '${blocksConfigSrcFolderRoot}'`
-    : `Default srcFolderRoot unchanged => srcFolderRoot: '${_default.srcFolderRoot}'`;
-  const entryFileReference = blocksConfigEntryFileName
-    ? `Root ${blocksConfigFileName} file reference => entryFileName: '${blocksConfigEntryFileName}'`
-    : `Default entryFileName unchanged => entryFileName: '${_default.entryFileName}${_default.fileExtension}'`;
+  const srcFolderReference = blocksConfigSrcFolderRoot ? `Root ${blocksConfigFileName} file reference => srcFolderRoot: '${blocksConfigSrcFolderRoot}'` : `Default srcFolderRoot unchanged => srcFolderRoot: '${_default.srcFolderRoot}'`;
+  const entryFileReference = blocksConfigEntryFileName ? `Root ${blocksConfigFileName} file reference => entryFileName: '${blocksConfigEntryFileName}'` : `Default entryFileName unchanged => entryFileName: '${_default.entryFileName}${_default.fileExtension}'`;
   const blocksConfigReference = `${srcFolderReference}\n${entryFileReference}`;
   //-
   if (!fs.existsSync(fullEntryFilePath)) {
     console.error('--------------------------');
     console.error('ERROR |', `${userAppName} (your app):`);
-    console.error(
-      `Main file "${entryFilePathWithTSextension}" does not exist.`,
-    );
+    console.error(`Main file "${entryFilePathWithTSextension}" does not exist.`);
     console.error('--------------------------');
     console.error(`Your blocks config current state:`);
     console.error(blocksConfigReference);
     console.error('--------------------------');
     console.error(`Suggestion (based on current state):`);
-    console.error(
-      `→ Create main file "${entryFilePathWithTSextension}" in your project.`,
-    );
+    console.error(`→ Create main file "${entryFilePathWithTSextension}" in your project.`);
 
     const moreDetailsErrorText = `→ More details in our user guide, if you prefer a different main file path.`;
     //-
@@ -76,9 +52,7 @@ export const validateMainEntryFilePathInUserApp = ({
       },
     });
     //-
-    const detectedBlocksConfigFile = userAppRootContent.filter(
-      (fileName) => fileName === blocksConfigFileName,
-    )[0];
+    const detectedBlocksConfigFile = userAppRootContent.filter((fileName) => fileName === blocksConfigFileName)[0];
     //-
     const userAppSrcFolderContent = getCurrentFolderContent({
       workingDirectory: path.resolve(userAppRoot, userAppSrcFolderRoot),
@@ -90,9 +64,7 @@ export const validateMainEntryFilePathInUserApp = ({
         // also no blocks.config.ts file at the root of the user app.
         //--------------------------------------------------------------------------------
         if (!detectedBlocksConfigFile) {
-          console.error(
-            `→ Or if you prefer a different main file path, create e.g. app/main.ts file at the root of your project and add code as needed. Create ${blocksConfigFileName} at the root of your project, and add this code inside it to reference your main file:`,
-          );
+          console.error(`→ Or if you prefer a different main file path, create e.g. app/main.ts file at the root of your project and add code as needed. Create ${blocksConfigFileName} at the root of your project, and add this code inside it to reference your main file:`);
           console.error(blocksConfigTemplateCode);
           //-
           process.exit(1);

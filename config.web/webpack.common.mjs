@@ -38,12 +38,11 @@ const userAppPkgJSON = JSON.parse(fs.readFileSync(path.join(userAppRoot, 'packag
 
 const pkgJSONnameFormatter = (name) => {
   return name
-    .replace(/^@.*\//, '') 
-    .split(/[-_]/)         
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .replace(/^@.*\//, '')
+    .split(/[-_]/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join('');
 };
-
 
 // ------------------------------------------
 // Blocks config (from user app) loader logic
@@ -79,8 +78,8 @@ if (fs.existsSync(blocksConfigPath)) {
 const blocksConfigSrcFolderRoot = blocksConfig.devBuild.srcFolderRoot;
 const blocksConfigEntryFileName = blocksConfig.devBuild.entryFileName;
 //-
-const userAppSrcFolderRoot =  blocksConfigSrcFolderRoot || _default.srcFolderRoot;
-const userAppEntryFileName =  blocksConfigEntryFileName || _default.entryFileName;
+const userAppSrcFolderRoot = blocksConfigSrcFolderRoot || _default.srcFolderRoot;
+const userAppEntryFileName = blocksConfigEntryFileName || _default.entryFileName;
 
 const entryFilePath = path.resolve(userAppRoot, userAppSrcFolderRoot, userAppEntryFileName);
 
@@ -126,16 +125,12 @@ const customMetaDataPluginForUserApp = {
           }, null, 2);
 
           // 3. Use emitAsset instead of direct assignment
-          compilation.emitAsset(
-            'metadata.json',
-            new compiler.webpack.sources.RawSource(metadata)
-          );
-        }
+          compilation.emitAsset('metadata.json', new compiler.webpack.sources.RawSource(metadata));
+        },
       );
     });
-  }
+  },
 };
-
 
 export default {
   // ----------------------------------------------------------
@@ -154,14 +149,14 @@ export default {
           // ----------------------------------------------------------------
           // Using the absolute path here so Webpack doesn't have to "search"
           // ----------------------------------------------------------------
-          loader: tsLoaderPath, 
-          options: { 
+          loader: tsLoaderPath,
+          options: {
             transpileOnly: true,
             // -----------------------------------------
             // Point to the user app's config explicitly
             // -----------------------------------------
-            configFile: path.resolve(userAppRoot, 'tsconfig.json')
-          }
+            configFile: path.resolve(userAppRoot, 'tsconfig.json'),
+          },
         },
         exclude: /node_modules/,
       },
@@ -172,19 +167,13 @@ export default {
     // --------------------------------------
     // Helps to resolve standard dependencies
     // --------------------------------------
-    modules: [
-      path.resolve(userAppRoot, 'node_modules'),
-      path.resolve(__dirname, '../node_modules')
-    ],
+    modules: [path.resolve(userAppRoot, 'node_modules'), path.resolve(__dirname, '../node_modules')],
   },
   // -------------------------------------------------
   // Helps resolve other loaders if you add them later
   // -------------------------------------------------
   resolveLoader: {
-    modules: [
-      path.resolve(__dirname, '../node_modules'),
-      'node_modules'
-    ],
+    modules: [path.resolve(__dirname, '../node_modules'), 'node_modules'],
   },
   output: {
     library: {
@@ -200,13 +189,15 @@ export default {
     // ---------------------------------------------------------------------------------------------------------
     // Only initialize and add the HtmlWebpackPlugin plugin if the user app's "src folder root" has an html file
     // ---------------------------------------------------------------------------------------------------------
-    ...(userAppHasHTMLtemplate ? [
-      new HtmlWebpackPlugin({
-        title: 'Blocks App',
-        filename: 'index.html',
-        template: userAppHtmlTemplate,
-        inject: 'body',
-      })
-    ] : []),
+    ...(userAppHasHTMLtemplate
+      ? [
+          new HtmlWebpackPlugin({
+            title: 'Blocks App',
+            filename: 'index.html',
+            template: userAppHtmlTemplate,
+            inject: 'body',
+          }),
+        ]
+      : []),
   ],
 };
