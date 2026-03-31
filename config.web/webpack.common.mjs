@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from 'url';
 import { createRequire, register } from 'module';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 //-
-import { _default } from './helpers/internal.helpers.js';
+import { _default } from '@build-in-blocks/dev.resources';
 import { validateMainEntryFilePathInUserApp } from './validate/userapp.validate.js';
 
 // ------------------------------------------------

@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import { _default, getCurrentFolderContent } from '@build-in-blocks/dev.resources';
 //-
-import { blocksConfigTemplateCode, getCurrentFolderContent } from '../helpers/resources.helpers.js';
-import { _default } from '../helpers/internal.helpers.js';
+import { validationErrorMessage, moreDetailsErrorText } from '../helpers/userapp.helper.js';
 
 export const validateMainEntryFilePathInUserApp = ({ userAppName, userAppRoot, userAppSrcFolderRoot, userAppEntryFileName, blocksConfigFileName, blocksConfigSrcFolderRoot, blocksConfigEntryFileName }) => {
   const hasFileExtension = ({ filePath }) => path.extname(filePath).length > 0;
@@ -43,7 +43,6 @@ export const validateMainEntryFilePathInUserApp = ({ userAppName, userAppRoot, u
     console.error(`Suggestion (based on current state):`);
     console.error(`→ Create main file "${entryFilePathWithTSextension}" in your project.`);
 
-    const moreDetailsErrorText = `→ More details in our user guide, if you prefer a different main file path.`;
     //-
     const userAppRootContent = getCurrentFolderContent({
       workingDirectory: userAppRoot,
@@ -64,8 +63,7 @@ export const validateMainEntryFilePathInUserApp = ({ userAppName, userAppRoot, u
         // also no blocks.config.ts file at the root of the user app.
         //--------------------------------------------------------------------------------
         if (!detectedBlocksConfigFile) {
-          console.error(`→ Or if you prefer a different main file path, create e.g. app/main.ts file at the root of your project and add code as needed. Create ${blocksConfigFileName} at the root of your project, and add this code inside it to reference your main file:`);
-          console.error(blocksConfigTemplateCode);
+          validationErrorMessage({ blocksConfigFileName });
           //-
           process.exit(1);
         }
