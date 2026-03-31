@@ -74,6 +74,7 @@ if (pkgArgDetected) {
 
   spawnChildProcess.on('exit', (code) => {
     if (code === 0 && isProd) {
+      console.log('============================================\n');
       console.log('[PROD] Bundling complete.\n[PROD] Generating type definitions...');
       try {
         // -------------------------------------------------------
@@ -88,6 +89,7 @@ if (pkgArgDetected) {
       } catch (e) {
         console.error(`ERROR | @build-in-blocks dev.build (internal):\nType generation failed.\n${e}`);
       }
+      console.log('');
     }
     process.exit(code || 0);
   });

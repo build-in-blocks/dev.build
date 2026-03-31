@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 
-export const renameRootTypeFileInBuildOutputFolder = () => {
+const renameRootTypeFileInBuildOutputFolder = () => {
   const buildFolderRoot = path.resolve(process.cwd(), 'build');
   const expectedDtsTypeFile = path.join(buildFolderRoot, 'index.d.ts');
   //----------------------------------------------------------------
@@ -18,3 +18,5 @@ export const renameRootTypeFileInBuildOutputFolder = () => {
     }
   }
 };
+
+export { renameRootTypeFileInBuildOutputFolder };
