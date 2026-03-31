@@ -5,6 +5,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
+import { renameRootTypeFileInBuildOutputFolder } from './helper/rename-root-type.js';
+
 // ------------------------------------------------
 // ESM & Resolution Helpers:
 // Recreate 'require' and '__dirname' for ESM scope
@@ -79,6 +81,9 @@ if (pkgArgDetected) {
         // Using the user app's local tsc
         // -------------------------------------------------------
         execSync('npx tsc --emitDeclarationOnly', { stdio: 'inherit' });
+        //-
+        renameRootTypeFileInBuildOutputFolder();
+        //-
         console.log('[PROD] Types (.d.ts files) generated successfully.');
       } catch (e) {
         console.error(`ERROR | @build-in-blocks dev.build (internal):\nType generation failed.\n${e}`);
