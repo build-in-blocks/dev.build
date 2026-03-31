@@ -13,6 +13,7 @@ const sizeSummaryPlugin = {
       console.log('============================================');
       assets.forEach((asset) => {
         if (asset.name === 'index.html' || asset.name.endsWith('.js') || asset.name.endsWith('.json')) {
+          // if (/\.(js|json|html)$/.test(asset.name)) //Note: Using this instead Captures .js, .json, and .html (including nested chunks)
           const sizeKb = (asset.size / 1024).toFixed(2);
           const emoji = asset.size > 244000 ? '⚠️' : '✅'; // 244kb is Webpack's default warning limit
           console.log(`${emoji} ${asset.name}: ${sizeKb} KB`);

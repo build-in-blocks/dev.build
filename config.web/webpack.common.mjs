@@ -148,7 +148,7 @@ export default {
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.(ts|js)x?$/,
         use: {
           // ----------------------------------------------------------------
           // Using the absolute path here so Webpack doesn't have to "search"
@@ -167,7 +167,7 @@ export default {
     ],
   },
   resolve: {
-    extensions: [_default.fileExtension], // [Maybe later]: Add these other extensions to the array when this library is compatible with such file types: '.js', '.tsx', '.jsx'
+    extensions: [_default.fileExtension, '.js'], // TODO: [Maybe later if needed] | Add these other extensions to the array: '.tsx', '.jsx'
     // --------------------------------------
     // Helps to resolve standard dependencies
     // --------------------------------------
