@@ -3,6 +3,9 @@ import fs from 'fs';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { createRequire, register } from 'module';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+//-
+import { _default } from './helpers/internal.helpers.js';
+import { validateMainEntryFilePathInUserApp } from './validate/userapp.validate.js';
 
 // ------------------------------------------------
 // ESM & Resolution Helpers:
@@ -45,8 +48,8 @@ const pkgJSONnameFormatter = (name) => {
 // ------------------------------------------
 // Blocks config (from user app) loader logic
 // ------------------------------------------
-const userAppConfigName = 'blocks.config.ts';
-const blocksConfigPath = path.resolve(userAppRoot, userAppConfigName);
+const blocksConfigFileName = `blocks.config${_default.fileExtension}`;
+const blocksConfigPath = path.resolve(userAppRoot, blocksConfigFileName);
 let blocksConfig = {};
 //-
 if (fs.existsSync(blocksConfigPath)) {
@@ -60,15 +63,39 @@ if (fs.existsSync(blocksConfigPath)) {
     const module = await import(pathToFileURL(blocksConfigPath).href);
     blocksConfig = module.default || module;
   } catch (e) {
-    console.warn(`⚠️ Could not load ${userAppConfigName}, using defaults.`, e.message);
+    console.warn(`⚠️ Could not load ${blocksConfigFileName}, using defaults.`, e.message);
   }
+} else {
+  // -----------------------------------------------------------------------------
+  // Setting blocksConfig.devBuild to empty object {} here, prevents errors i.e.
+  // Instead of adding optional chaining (?) to blocksConfig.devBuild.srcFolderRoot
+  // and blocksConfig.devBuild.entryFileName below.
+  // -----------------------------------------------------------------------------
+  blocksConfig = {
+    devBuild: {},
+  };
 }
 //-
-const userAppSrcFolderRoot = blocksConfig.webpack.srcFolderRoot || 'src';
-const userAppEntryFileName = blocksConfig.webpack.entryFileName || 'index';
+const blocksConfigSrcFolderRoot = blocksConfig.devBuild.srcFolderRoot;
+const blocksConfigEntryFileName = blocksConfig.devBuild.entryFileName;
+//-
+const userAppSrcFolderRoot =  blocksConfigSrcFolderRoot || _default.srcFolderRoot;
+const userAppEntryFileName =  blocksConfigEntryFileName || _default.entryFileName;
+
+const entryFilePath = path.resolve(userAppRoot, userAppSrcFolderRoot, userAppEntryFileName);
 
 const userAppHtmlTemplate = path.resolve(userAppRoot, userAppSrcFolderRoot, 'index.html');
 const userAppHasHTMLtemplate = fs.existsSync(userAppHtmlTemplate);
+
+validateMainEntryFilePathInUserApp({
+  userAppName: userAppPkgJSON.name,
+  userAppRoot,
+  userAppSrcFolderRoot,
+  userAppEntryFileName,
+  blocksConfigFileName,
+  blocksConfigSrcFolderRoot,
+  blocksConfigEntryFileName,
+});
 
 // ----------------------------------------------------------------------------------------
 // Custom Metadata Plugin Logic to add user app version info into the dist and build folder
@@ -117,12 +144,12 @@ export default {
   context: userAppRoot,
   // --------------
   entry: {
-    index: path.resolve(userAppRoot, userAppSrcFolderRoot, userAppEntryFileName),
+    index: entryFilePath,
   },
   module: {
     rules: [
       {
-        test: /\.(ts|js)x?$/,
+        test: /\.ts$/,
         use: {
           // ----------------------------------------------------------------
           // Using the absolute path here so Webpack doesn't have to "search"
@@ -141,7 +168,7 @@ export default {
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js', '.tsx', '.jsx'],
+    extensions: [_default.fileExtension], // [Maybe later]: Add these other extensions to the array when this library is compatible with such file types: '.js', '.tsx', '.jsx'
     // --------------------------------------
     // Helps to resolve standard dependencies
     // --------------------------------------
