@@ -11,7 +11,18 @@
   "contributorsPerLine": 6,
   "contributorsSortAlphabetically": true,
   "skipCi": true,
-  "contributors": [],
+  "contributors": [
+    {
+      "login": "Ifycode",
+      "name": "Mary @Ifycode",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45185388?v=4",
+      "profile": "https://github.com/Ifycode",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    }
+  ],
   "commitConvention": "angular",
   "commitType": "docs"
 }
