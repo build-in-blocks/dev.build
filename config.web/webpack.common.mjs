@@ -74,7 +74,7 @@ if (fs.existsSync(blocksConfigPath)) {
 } else {
   // -----------------------------------------------------------------------------
   // Setting blocksConfig.devBuild to empty object {} here, prevents errors i.e.
-  // Instead of adding optional chaining (?) to blocksConfig.devBuild.srcFolderRoot
+  // Instead of adding optional chaining (?) to blocksConfig.devBuild.srcCodeFolder
   // and blocksConfig.devBuild.entryFileName below.
   // -----------------------------------------------------------------------------
   blocksConfig = {
@@ -82,24 +82,24 @@ if (fs.existsSync(blocksConfigPath)) {
   };
 }
 //-
-const blocksConfigSrcFolderRoot = blocksConfig.devBuild.srcFolderRoot;
+const blocksConfigSrcCodeFolder = blocksConfig.devBuild.srcCodeFolder;
 const blocksConfigEntryFileName = blocksConfig.devBuild.entryFileName;
 //-
-const userAppSrcFolderRoot = blocksConfigSrcFolderRoot || _default.srcFolderRoot;
+const userAppSrcCodeFolder = blocksConfigSrcCodeFolder || _default.srcCodeFolder;
 const userAppEntryFileName = blocksConfigEntryFileName || _default.entryFileName;
 
-const entryFilePath = path.resolve(userAppRoot, userAppSrcFolderRoot, userAppEntryFileName);
+const entryFilePath = path.resolve(userAppRoot, userAppSrcCodeFolder, userAppEntryFileName);
 
-const userAppHtmlTemplate = path.resolve(userAppRoot, userAppSrcFolderRoot, 'index.html');
+const userAppHtmlTemplate = path.resolve(userAppRoot, userAppSrcCodeFolder, 'index.html');
 const userAppHasHTMLtemplate = fs.existsSync(userAppHtmlTemplate);
 
 validateMainEntryFilePathInUserApp({
   userAppName: userAppPkgJSON.name,
   userAppRoot,
-  userAppSrcFolderRoot,
+  userAppSrcCodeFolder,
   userAppEntryFileName,
   blocksConfigFileName,
-  blocksConfigSrcFolderRoot,
+  blocksConfigSrcCodeFolder,
   blocksConfigEntryFileName,
 });
 

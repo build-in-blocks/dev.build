@@ -87,7 +87,7 @@ Create a `tsconfig.json` file at the root of your web project, and add these:
 
   const blocksConfig: BlocksConfig = {
     devBuild: {
-      srcFolderRoot: 'app',
+      srcCodeFolder: 'app',
       entryFileName: 'main',
     },
   };
