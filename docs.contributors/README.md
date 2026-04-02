@@ -38,12 +38,12 @@ Follow the instructions to fork and clone this repository locally unto your comp
 
 #### Install dependencies and run project locally
 
-- **Folder structure:** On your computer, create a new parent folder or go to an existing folder that you will like to be the parent, for both this library and your web app. Make sure your cloned `dev.build` repo folder and your web app are inside the parent folder, so that the structure looks like this:
+- **Folder structure:** On your computer, create a new parent folder or go to an existing folder that you will like to be the parent, for both this library and your web app (or web library). Make sure your cloned `dev.build` repo folder and your web app (or web library) are inside the parent folder, so that the structure looks like this:
 
     ````
     PARENT-FOLDER/
     ├── dev.build/
-    └── your-web-app/
+    └── your-web-app-or-library/
     ````
 
 - **For library:** Open a terminal specifically for the library, cd into the root of the library folder and run the following script commands.
@@ -60,9 +60,9 @@ Follow the instructions to fork and clone this repository locally unto your comp
     npm link
     ```
 
-- **For your web app:** Open a terminal specifically for your web app, cd into the root of your web app.
-    - **Step 1:** First install the npm dependencies in your web app.
-    - **Step 2:** Add this to your web app's package.json dependencies (take note incase library version changes in the future: use the exact version number in the `@build-in-blocks/dev.build` library's `package.json`. At the time of writing, it is 1.0.0):
+- **For your web app (or web library):** Open a terminal specifically for your web app (or web library), cd into the root of your web app (or web library).
+    - **Step 1:** First install the npm dependencies in your web app (or web library).
+    - **Step 2:** Add this to your web app (or web library)'s package.json dependencies (take note incase library version changes in the future: use the exact version number in the `@build-in-blocks/dev.build` library's `package.json`. At the time of writing, it is 1.0.0):
 
         ```
         "@build-in-blocks/dev.build": "1.0.0"

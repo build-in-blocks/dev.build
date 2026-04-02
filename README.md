@@ -36,7 +36,7 @@ npm install -D @build-in-blocks/dev.build
 
 #### 2. Add typescript config
 
-If your web project uses `typescript`, you will need this step too. Create a `tsconfig.json` file at the root of your web project, and add these:
+Create a `tsconfig.json` file at the root of your web project, and add these:
 
 ````
 {
@@ -49,20 +49,80 @@ If your web project uses `typescript`, you will need this step too. Create a `ts
 }
 ````
 
-#### 3. Add dev and build scripts
+#### 3. Update your project's package.json
 
-In your web project's `package.json` file, add the `dev` and `build` scripts:
+- **Add dev and build scripts:** In your web project's `package.json` file, add the `dev` and `build` scripts:
 
-````
-"scripts": {
+  ````
+  "scripts": {
     "dev": "npx @build-in-blocks/dev.build@1.0.0 dev:build",
     "build": "npx @build-in-blocks/dev.build@1.0.0 prod:build"
     // your other npm scripts in your project goes here as usual
-},
-````
+  },
+  ````
 
-> [!IMPORTANT]  
-> About `@build-in-blocks/dev.build@[VERSION_NUMBER_HERE]` in the scripts: Make sure the version number used your in your `dev` and `build` scripts is the same as the version of the `@build-in-blocks/dev.build` package in your `package.json` file's `devDependencies`.
+  > [!IMPORTANT]  
+  > About `@build-in-blocks/dev.build@[VERSION_NUMBER_HERE]` in the scripts: Make sure the version number used your in your `dev` and `build` scripts is the same as the version of the `@build-in-blocks/dev.build` package in your `package.json` file's `devDependencies`.
+
+- **You need this too:** Add these in the your web project's `package.json` file too:
+
+  ````
+  {
+    "type": "module",
+    "sideEffects": false,
+    // your other package.json property values go here as usual
+  }
+  ````
+
+  > [!NOTE]  
+  > You need `"type": "module"` since this library package is ESM-first. `sideEffects` helps with treeshaking.
+
+#### 4. Source code folder and entry file for webpack
+
+- **Option 1 - Default webpack entry file path:** If you create or use a `src/index.ts` file in your web project, the library will assume that you don't wish to change your `webpack` entry file path and want to stick to the default.
+- **option 2 - Override the default with your preferred entry file path:** If you prefer e.g. `app/main.ts` to be your project's `webpack` entry file path, create a `blocks.config.ts` file at the root of your web project and add this code in there:
+
+  ````
+  import { BlocksConfig } from '@build-in-blocks/dev.resources';
+
+  const blocksConfig: BlocksConfig = {
+    devBuild: {
+      srcFolderRoot: 'app',
+      entryFileName: 'main',
+    },
+  };
+
+  export default blocksConfig;
+  ````
+  > [!NOTE]  
+  > You'll need to install the `@build-in-blocks/dev.resources` package in your web project.
+  
+  > [!NOTE]  
+  > You'll also need to update your web project's `tsconfig.json` file's `include` array i.e. change `"src"` to `"app"`.
+
+#### 5. (Optional) index.html - run code in browser
+
+If you plan to run your web project in the browser, add a main `index.html` file at the root of your source code folder i.e. it's file path should be `src/index.html` if you are using default, or e.g. `app/index.html` if you've used blocks config to override the default. 
+
+> [!NOTE]  
+> This will automatically include the main `index.html` file in your `dist` and `build` folders. Your entry point file is also injected in the generated `index.html`'s `body` tag.
+
+#### 6. Run the npm scripts to generate output folders
+
+- **Local development build:** `Webpack` will now watch your source code folder as you make changes to its content, and will also generate/update the `dist` output folder, when you run the `dev` script command:
+
+  ````
+  npm run dev
+  ````
+
+- **Production build:** Run the `build` script command, anytime you need to generate/update your production build i.e. the `build` output folder:
+  
+  ````
+  npm run build
+  ````
+
+> [!NOTE]  
+> See user guide 👆🏽 (towards the top of this README) for information for more information.
 
 #
 
