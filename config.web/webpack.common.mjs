@@ -61,8 +61,15 @@ if (fs.existsSync(blocksConfigPath)) {
     // --------------------------------------------------------------------
     const module = await import(pathToFileURL(blocksConfigPath).href);
     blocksConfig = module.default || module;
-  } catch (e) {
-    console.warn(`⚠️ Could not load ${blocksConfigFileName}, using defaults.`, e.message);
+  } catch {
+    console.error('--------------------------');
+    console.error('ERROR |', `${userAppPkgJSON.name} (your app):`);
+    console.error('"type": "module" is (probably) not present in your project\'s package.json file.');
+    console.error('--------------------------');
+    console.error('ERROR | @build-in-blocks/dev.build (internal):');
+    console.error(`Could not load ${blocksConfigFileName}, using defaults.\n`);
+    //-
+    process.exit(1);
   }
 } else {
   // -----------------------------------------------------------------------------

@@ -87,7 +87,7 @@ if (pkgArgDetected) {
         //-
         console.log('[PROD] Types (.d.ts files) generated successfully.');
       } catch (e) {
-        console.error(`ERROR | @build-in-blocks dev.build (internal):\nType generation failed.\n${e}`);
+        console.error(`ERROR | @build-in-blocks/dev.build (internal):\nType generation failed.\n${e}`);
       }
       console.log('');
     }

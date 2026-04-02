@@ -24,4 +24,4 @@ export const validationErrorMessage = ({ blocksConfigFileName }) => {
   console.error(blocksConfigTemplateCode({ exampleSrcFolderRoot, exampleEntryFileName }));
 };
 
-export const moreDetailsErrorText = `→ More details in our user guide, if you prefer a different main file path.`;
+export const moreDetailsErrorText = `→ More details in our user guide, if you prefer a different main file path.\n`;
