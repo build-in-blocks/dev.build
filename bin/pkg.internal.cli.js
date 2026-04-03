@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+import { blocksTerminalLogger } from '../config.root/blocks.packages.js';
+//-
+import { internalPkgJSON } from '../config.root/root.js';
+
 import { spawn, execSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -87,7 +91,13 @@ if (pkgArgDetected) {
         //-
         console.log('[PROD] Types (.d.ts files) generated successfully.');
       } catch (e) {
-        console.error(`ERROR | @build-in-blocks/dev.build (internal):\nType generation failed.\n${e}`);
+        blocksTerminalLogger({
+          internalPackage: {
+            fullName: internalPkgJSON.name,
+            errorMessage: 'Type generation failed.',
+          },
+          originalErrorMessage: e,
+        });
       }
       console.log('');
     }

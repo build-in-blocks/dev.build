@@ -1,3 +1,7 @@
+import { blocksTerminalLogger } from '../config.root/blocks.packages.js';
+//-
+import { internalPkgJSON } from '../config.root/root.js';
+//-
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath, pathToFileURL } from 'url';
@@ -62,14 +66,24 @@ if (fs.existsSync(blocksConfigPath)) {
     const module = await import(pathToFileURL(blocksConfigPath).href);
     blocksConfig = module.default || module;
   } catch {
-    console.error('--------------------------');
-    console.error('ERROR |', `${userAppPkgJSON.name} (your app):`);
-    console.error('"type": "module" is (probably) not present in your project\'s package.json file.');
-    console.error('--------------------------');
-    console.error('ERROR | @build-in-blocks/dev.build (internal):');
-    console.error(`Could not load ${blocksConfigFileName}, using defaults.\n`);
-    //-
-    process.exit(1);
+    blocksTerminalLogger({
+      internalPackage: {
+        fullName: internalPkgJSON.name,
+      },
+      userApp: {
+        fullName: userAppPkgJSON.name,
+        errorMessage: `Could not load ${blocksConfigFileName}`,
+      },
+      errorSource: true,
+      suggestion: {
+        // prettier-ignore
+        messageList: [
+          '→ Check that "type": "module" is present in your project\'s package.json',
+          `→ Check that the correct import statement and blocks config object properties are used in your project's ${blocksConfigFileName}`,
+        ],
+      },
+      processExit: true,
+    });
   }
 } else {
   // -----------------------------------------------------------------------------

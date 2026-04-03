@@ -1,3 +1,7 @@
+import { blocksTerminalLogger } from '../../config.root/blocks.packages.js';
+//-
+import { internalPkgJSON } from '../../config.root/root.js';
+//-
 import fs from 'fs';
 import path from 'path';
 import { _default, getCurrentFolderContent } from '@build-in-blocks/dev.resources';
@@ -33,15 +37,23 @@ export const validateMainEntryFilePathInUserApp = ({ userAppName, userAppRoot, u
   const blocksConfigReference = `${srcFolderReference}\n${entryFileReference}`;
   //-
   if (!fs.existsSync(fullEntryFilePath)) {
-    console.error('--------------------------');
-    console.error('ERROR |', `${userAppName} (your app):`);
-    console.error(`Main file "${entryFilePathWithTSextension}" does not exist.`);
-    console.error('--------------------------');
-    console.error(`Your blocks config current state:`);
-    console.error(blocksConfigReference);
-    console.error('--------------------------');
-    console.error(`Suggestion (based on current state):`);
-    console.error(`→ Create main file "${entryFilePathWithTSextension}" in your project.`);
+    blocksTerminalLogger({
+      internalPackage: {
+        fullName: internalPkgJSON.name,
+      },
+      userApp: {
+        fullName: userAppName,
+        errorMessage: `Main file "${entryFilePathWithTSextension}" does not exist.`,
+      },
+      errorSource: true,
+      suggestion: {
+        blocksConfig: {
+          showCurrentState: true,
+          referenceMessage: blocksConfigReference,
+        },
+        messageList: [`→ Create main file "${entryFilePathWithTSextension}" in your project.`],
+      },
+    });
 
     //-
     const userAppRootContent = getCurrentFolderContent({
