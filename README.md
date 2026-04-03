@@ -57,16 +57,12 @@ Create a `tsconfig.json` file at the root of your web project, and add these:
 
 ````
 {
-    "extends": "@build-in-blocks/dev.build/tsconfig.base.json",
-    "compilerOptions": {
-      "declarationDir": "./build",
-       // Add these too if you encounter any depreciation errors, otherwise you can skip them
-      "rootDir": "./src",
-      "moduleResolution": "node16",
-      "module": "node16"
-    },
-    // NOTE: If your source code folder name (i.e. the folder where your app's .ts work files reside) is not "src", change it in the include array below.
-    "include": ["src"],
+  "extends": "@build-in-blocks/devbuild/tsconfig.base.json",
+  "compilerOptions": {
+    "declarationDir": "./build",
+    "rootDir": "./src",
+  },
+  "include": ["src"],
 }
 ````
 
@@ -119,7 +115,7 @@ Create a `tsconfig.json` file at the root of your web project, and add these:
   > You'll need to install the `@build-in-blocks/dev.resources` package in your web project.
   
   > [!NOTE]  
-  > You'll also need to update your web project's `tsconfig.json` file's `include` array (and `rootDir`) i.e. change `"src"` to `"app"`.
+  > You'll also need to update your web project's `tsconfig.json` file's `include` array and `rootDir` i.e. change `"src"` to `"app"`.
 
 #### 5. (Optional) index.html - run code in browser
 

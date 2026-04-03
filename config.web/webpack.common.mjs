@@ -40,14 +40,6 @@ register(tsNodeEsmLoader, pathToFileURL('./'));
 export const userAppRoot = process.cwd();
 const userAppPkgJSON = JSON.parse(fs.readFileSync(path.join(userAppRoot, 'package.json'), 'utf-8'));
 
-const pkgJSONnameFormatter = (name) => {
-  return name
-    .replace(/^@.*\//, '')
-    .split(/[-_]/)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('');
-};
-
 // ------------------------------------------
 // Blocks config (from user app) loader logic
 // ------------------------------------------
@@ -201,13 +193,14 @@ export default {
     modules: [path.resolve(__dirname, '../node_modules'), 'node_modules'],
   },
   output: {
+    module: true, // Enable output as an ES Module
     library: {
-      name: pkgJSONnameFormatter(userAppPkgJSON.name),
-      type: 'umd',
-      export: 'default',
+      type: 'module', // Set library type to module
     },
-    globalObject: 'this',
     clean: true, // Wipes the dist/build folder before every new build
+  },
+  experiments: {
+    outputModule: true, // Required by Webpack 5 for ESM output
   },
   plugins: [
     customMetaDataPluginForUserApp,
