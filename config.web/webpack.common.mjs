@@ -2,6 +2,7 @@ import { blocksTerminalLogger } from '../config.root/blocks.packages.js';
 //-
 import { internalPkgJSON } from '../config.root/root.js';
 //-
+import webpack from 'webpack';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath, pathToFileURL } from 'url';
@@ -38,7 +39,7 @@ register(tsNodeEsmLoader, pathToFileURL('./'));
 // Work from user app's root
 //--------------------------
 export const userAppRoot = process.cwd();
-const userAppPkgJSON = JSON.parse(fs.readFileSync(path.join(userAppRoot, 'package.json'), 'utf-8'));
+export const userAppPkgJSON = JSON.parse(fs.readFileSync(path.join(userAppRoot, 'package.json'), 'utf-8'));
 
 // ------------------------------------------
 // Blocks config (from user app) loader logic
@@ -149,6 +150,10 @@ const customMetaDataPluginForUserApp = {
   },
 };
 
+// Detect dom.autoquery library from within the wep app that uses it
+// const domAutoqueryFromHostWebAppPath = path.resolve(userAppRoot, path.join('node_modules','@build-in-blocks', 'dom.autoquery', 'build', 'chunks.dom.autoquery'));
+// const hasDomAutoquery = fs.existsSync(domAutoqueryFromHostWebAppPath);
+
 export default {
   // ----------------------------------------------------------
   // Ensure Webpack knows we are working on the User app's code
@@ -175,12 +180,37 @@ export default {
             configFile: path.resolve(userAppRoot, 'tsconfig.json'),
           },
         },
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
+        //-------------------------------------------------------------------
+        // Never try to compile declaration files or existing build artifacts
+        //-------------------------------------------------------------------
+        // exclude: [
+        //   /node_modules/,
+        //   /\.d\.ts$/, 
+        //   path.resolve(userAppRoot, 'build'),
+        //   path.resolve(userAppRoot, 'dist'),
+        // ],
+        // Make sure we ARE processing the library
+        exclude: /node_modules\/(?!@build-in-blocks)/,
       },
+      {
+      test: /\.m?js$/,
+      resolve: {
+        // For dom.autoquery dist.prod:
+        // This tells Webpack: "If you don't see an extension, 
+        // try adding .js before giving up."
+        fullySpecified: false, 
+      },
+    },
     ],
   },
   resolve: {
     extensions: [_default.fileExtension, '.js'], // TODO: [Maybe later if needed] | Add these other extensions to the array: '.tsx', '.jsx'
+    alias: {
+      // Force Webpack to resolve library imports to the library's source
+      // Replace @build-in-blocks/dom.autoquery with your actual package name
+      '@build-in-blocks/dom.autoquery': path.resolve(userAppRoot, 'node_modules/@build-in-blocks/dom.autoquery/dist.prod'),
+    },
     // --------------------------------------
     // Helps to resolve standard dependencies
     // --------------------------------------
@@ -193,6 +223,7 @@ export default {
     modules: [path.resolve(__dirname, '../node_modules'), 'node_modules'],
   },
   output: {
+    publicPath: 'auto',
     module: true, // Enable output as an ES Module
     library: {
       type: 'module', // Set library type to module
@@ -204,6 +235,18 @@ export default {
   },
   plugins: [
     customMetaDataPluginForUserApp,
+
+    // ----------------------------------------------------------------------------------------------------------------------------
+    // Hey webpack, whenever you encounter a dynamic import, ONLY look for .js files. Ignore everything else (like .d.ts or .json)"
+    // ----------------------------------------------------------------------------------------------------------------------------
+    new webpack.ContextReplacementPlugin(
+      /./,                // Match all contexts
+      null,               // Don't change the directory
+      { 
+        test: /\.js$/     // ONLY include .js files in chunks
+      }
+    ),
+
     // ---------------------------------------------------------------------------------------------------------
     // Only initialize and add the HtmlWebpackPlugin plugin if the user app's "src folder root" has an html file
     // ---------------------------------------------------------------------------------------------------------
@@ -217,5 +260,20 @@ export default {
           }),
         ]
       : []),
+      // //---------------------------------------------------------
+      // // Only add CopyPlugin if the library chunks actually exist
+      // //---------------------------------------------------------
+      // ...(hasDomAutoquery ? [
+      //   new CopyPlugin({
+      //     patterns: [
+      //       {
+      //         from: domAutoqueryFromHostWebAppPath,
+      //         // to: 'chunks',
+      //         to: './chunks.dom.autoquery/', // This puts them in [dist|build]/chunks/
+      //         noErrorOnMissing: true,
+      //       },
+      //     ],
+      //   })
+      // ] : []),
   ],
 };

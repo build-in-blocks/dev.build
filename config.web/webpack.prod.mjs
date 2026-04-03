@@ -2,7 +2,7 @@ import path from 'path';
 import { merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import baseConfig, { userAppRoot } from './webpack.common.mjs';
+import baseConfig, { userAppPkgJSON, userAppRoot } from './webpack.common.mjs';
 
 const sizeSummaryPlugin = {
   apply: (compiler) => {
@@ -23,6 +23,8 @@ const sizeSummaryPlugin = {
     });
   },
 };
+//-
+const prodChunkFilename =`${userAppPkgJSON.name === '@build-in-blocks/dom.autoquery' ? 'chunks.dom.autoquery': 'chunks'}/[name].[contenthash].js`;
 
 export default merge(baseConfig, {
   mode: 'production',
@@ -30,7 +32,7 @@ export default merge(baseConfig, {
   output: {
     path: path.resolve(userAppRoot, 'build'),
     filename: '[name].js', // Since devtool is set to false, use stable name for published entry points
-    chunkFilename: 'chunks/[name].[contenthash].js',
+    chunkFilename: prodChunkFilename, // 'chunks/[name].[contenthash].js'
   },
   optimization: {
     usedExports: true, // Crucial for tree-shaking: It tells Webpack to determine used exports for each module
