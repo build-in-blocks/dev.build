@@ -1,14 +1,28 @@
 # @build-in-blocks/dev.build
 
+![Latest Version](https://img.shields.io/npm/v/@build-in-blocks/dev.build.svg?label=latest&color=brightgreen&style=flat-square) [![Npm package total downloads](https://flat.badgen.net/npm/dt/@build-in-blocks/dev.build?color=blue)](https://npmjs.com/package/@build-in-blocks/dev.build) ![build passing](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)
+
+[![License: AGPL v3.0](https://img.shields.io/badge/license-AGPL%20v3.0-blue.svg?style=flat-square)](https://www.gnu.org/licenses/agpl-3.0) [![All Contributors](https://img.shields.io/github/all-contributors/build-in-blocks/dev.build?color=ee8449&style=flat-square)](#contributors) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/build-in-blocks/dev.build/blob/develop/docs.contributors/README.md)
+
+#
+
+**Built with:** Node.js v24.0.2
+
+#
+
 **Supported Node.js versions:** Node.js v20.x, v22.x, v24.x and v25.x
 
 #
 
-**Description:** Production and development bundler build setup for your `typescript` and `javascript` web-related code repositories.
+**Overview:** Production and development bundler build setup for your `typescript` and `javascript` web-related code repositories.
 
 #
 
-**How it works:** The **@build-in-blocks/dev.build** package contains preconfigured `webpack` setup for both development and production environment. After installation in your web project (and with very minimal intervention on your end), you just need to run `npm run dev` to generate a development mode bundle or `npm run build` to generate a well optimized production mode bundle.
+**Description:** The **@build-in-blocks/dev.build** package contains preconfigured `webpack` setup for both development and production environment. After installation in your web project (and with very minimal intervention on your end), you just need to run `npm run dev` to generate a development mode bundle or `npm run build` to generate a well optimized production mode bundle.
+
+#
+
+**Dependency:** `@build-in-blocks` framework libraries that have `dev.` in their name are only useful for local development, and should only be installed as a `devDependency` in your project.
 
 #
 
@@ -26,6 +40,9 @@
 
 ### Quick installation & usage guide
 
+> [!NOTE]  
+> Also see user guide 👆🏽 for more detailed guide on what's included in this package, how to go about code splitting, accessing your app's metadata and bundle analysis.
+
 #### 1. Main package installation
 
 Install the package in your project:
@@ -42,9 +59,13 @@ Create a `tsconfig.json` file at the root of your web project, and add these:
 {
     "extends": "@build-in-blocks/dev.build/tsconfig.base.json",
     "compilerOptions": {
-        "declarationDir": "./build"
+      "declarationDir": "./build",
+       // Add these too if you encounter any depreciation errors, otherwise you can skip them
+      "rootDir": "./src",
+      "moduleResolution": "node16",
+      "module": "node16"
     },
-    // NOTE: Change folder name in the include array to where your app's .ts work files reside.
+    // NOTE: If your source code folder name (i.e. the folder where your app's .ts work files reside) is not "src", change it in the include array below.
     "include": ["src"],
 }
 ````
@@ -98,14 +119,14 @@ Create a `tsconfig.json` file at the root of your web project, and add these:
   > You'll need to install the `@build-in-blocks/dev.resources` package in your web project.
   
   > [!NOTE]  
-  > You'll also need to update your web project's `tsconfig.json` file's `include` array i.e. change `"src"` to `"app"`.
+  > You'll also need to update your web project's `tsconfig.json` file's `include` array (and `rootDir`) i.e. change `"src"` to `"app"`.
 
 #### 5. (Optional) index.html - run code in browser
 
 If you plan to run your web project in the browser, add a main `index.html` file at the root of your source code folder i.e. it's file path should be `src/index.html` if you are using default, or e.g. `app/index.html` if you've used blocks config to override the default. 
 
 > [!NOTE]  
-> This will automatically include the main `index.html` file in your `dist` and `build` folders. Your entry point file is also injected in the generated `index.html`'s `body` tag.
+> This will automatically include the main `index.html` file in the generated `dist` and `build` folders. Your entry point file is also injected in the generated `index.html`'s `body` tag.
 
 #### 6. Run the npm scripts to generate output folders
 
@@ -121,14 +142,11 @@ If you plan to run your web project in the browser, add a main `index.html` file
   npm run build
   ````
 
-> [!NOTE]  
-> See user guide 👆🏽 (towards the top of this README) for information for more information.
-
 #
 
 ### Contributors
 
-[![All Contributors](https://img.shields.io/github/all-contributors/build-in-blocks/dev.build?color=ee8449&style=flat-square)](#contributors) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/build-in-blocks/dev.build/blob/develop/docs.contributors/README.md) [![License: AGPL v3.0](https://img.shields.io/badge/License-AGPL%20v3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+Thanks to these amazing contributors to the **@build-in-blocks/dev.resources** project. This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. See [emoji key](https://allcontributors.org/docs/en/emoji-key). Contributions of any kind welcome!
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
