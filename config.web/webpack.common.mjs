@@ -92,7 +92,7 @@ if (fs.existsSync(blocksConfigPath)) {
 const blocksConfigSrcCodeFolder = blocksConfig.devBuild.srcCodeFolder;
 const blocksConfigEntryFileName = blocksConfig.devBuild.entryFileName;
 //-
-const userAppSrcCodeFolder = blocksConfigSrcCodeFolder || _default.srcCodeFolder;
+export const userAppSrcCodeFolder = blocksConfigSrcCodeFolder || _default.srcCodeFolder;
 const userAppEntryFileName = blocksConfigEntryFileName || _default.entryFileName;
 
 const entryFilePath = path.resolve(userAppRoot, userAppSrcCodeFolder, userAppEntryFileName);
@@ -150,10 +150,6 @@ const customMetaDataPluginForUserApp = {
   },
 };
 
-// Detect dom.autoquery library from within the wep app that uses it
-// const domAutoqueryFromHostWebAppPath = path.resolve(userAppRoot, path.join('node_modules','@build-in-blocks', 'dom.autoquery', 'build', 'chunks.dom.autoquery'));
-// const hasDomAutoquery = fs.existsSync(domAutoqueryFromHostWebAppPath);
-
 export default {
   // ----------------------------------------------------------
   // Ensure Webpack knows we are working on the User app's code
@@ -180,47 +176,52 @@ export default {
             configFile: path.resolve(userAppRoot, 'tsconfig.json'),
           },
         },
-        // exclude: /node_modules/,
-        //-------------------------------------------------------------------
-        // Never try to compile declaration files or existing build artifacts
-        //-------------------------------------------------------------------
-        // exclude: [
-        //   /node_modules/,
-        //   /\.d\.ts$/, 
-        //   path.resolve(userAppRoot, 'build'),
-        //   path.resolve(userAppRoot, 'dist'),
-        // ],
-        // Make sure we ARE processing the library
+        //---------------------------------------------------------------------
+        // Keeps @build-in-blocks processable while ignoring other node_modules
+        // i.e. Make sure we ARE processing the blocks library from within the
+        // main web user app's node_modules folder
+        //---------------------------------------------------------------------
         exclude: /node_modules\/(?!@build-in-blocks)/,
       },
       {
-      test: /\.m?js$/,
-      resolve: {
-        // For dom.autoquery dist.prod:
-        // This tells Webpack: "If you don't see an extension, 
-        // try adding .js before giving up."
-        fullySpecified: false, 
+        test: /\.m?js$/,
+        resolve: {
+          //-------------------------------------------------------------------------------------
+          // For blocks library from within the main web user app (e.g. dom.autoquery dist.prod):
+          // This tells Webpack: "If you don't see an extension,try adding .js before giving up."
+          //-------------------------------------------------------------------------------------
+          fullySpecified: false,
+        },
       },
-    },
     ],
   },
   resolve: {
     extensions: [_default.fileExtension, '.js'], // TODO: [Maybe later if needed] | Add these other extensions to the array: '.tsx', '.jsx'
     alias: {
+      //---------------------------------------------------------------------------------------------
       // Force Webpack to resolve library imports to the library's source
-      // Replace @build-in-blocks/dom.autoquery with your actual package name
+      // Add more alias here when you have more libraries to access from within the main web user app
+      //---------------------------------------------------------------------------------------------
       '@build-in-blocks/dom.autoquery': path.resolve(userAppRoot, 'node_modules/@build-in-blocks/dom.autoquery/dist.prod'),
     },
     // --------------------------------------
     // Helps to resolve standard dependencies
     // --------------------------------------
-    modules: [path.resolve(userAppRoot, 'node_modules'), path.resolve(__dirname, '../node_modules')],
+    // prettier-ignore
+    modules: [
+      path.resolve(userAppRoot, 'node_modules'),
+      path.resolve(__dirname, '../node_modules'),
+    ],
   },
   // -------------------------------------------------
   // Helps resolve other loaders if you add them later
   // -------------------------------------------------
   resolveLoader: {
-    modules: [path.resolve(__dirname, '../node_modules'), 'node_modules'],
+    // prettier-ignore
+    modules: [
+      path.resolve(__dirname, '../node_modules'),
+      'node_modules',
+    ],
   },
   output: {
     publicPath: 'auto',
@@ -240,11 +241,11 @@ export default {
     // Hey webpack, whenever you encounter a dynamic import, ONLY look for .js files. Ignore everything else (like .d.ts or .json)"
     // ----------------------------------------------------------------------------------------------------------------------------
     new webpack.ContextReplacementPlugin(
-      /./,                // Match all contexts
-      null,               // Don't change the directory
-      { 
-        test: /\.js$/     // ONLY include .js files in chunks
-      }
+      /./, // Match all contexts
+      null, // Don't change the directory
+      {
+        test: /\.js$/, // ONLY include .js files in chunks
+      },
     ),
 
     // ---------------------------------------------------------------------------------------------------------
@@ -260,20 +261,5 @@ export default {
           }),
         ]
       : []),
-      // //---------------------------------------------------------
-      // // Only add CopyPlugin if the library chunks actually exist
-      // //---------------------------------------------------------
-      // ...(hasDomAutoquery ? [
-      //   new CopyPlugin({
-      //     patterns: [
-      //       {
-      //         from: domAutoqueryFromHostWebAppPath,
-      //         // to: 'chunks',
-      //         to: './chunks.dom.autoquery/', // This puts them in [dist|build]/chunks/
-      //         noErrorOnMissing: true,
-      //       },
-      //     ],
-      //   })
-      // ] : []),
   ],
 };
