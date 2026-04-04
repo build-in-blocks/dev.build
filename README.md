@@ -10,7 +10,7 @@
 
 #
 
-**Supported Node.js versions:** Node.js v20.x, v22.x, v24.x and v25.x
+**Supported Node.js versions:** Node.js v20.x, v22.x, v24.x and v25.x - Monitored by central Blocks CI from [@build-in-blocks/dev.setup](https://www.npmjs.com/package/@build-in-blocks/dev.setup)
 
 #
 
@@ -51,20 +51,26 @@ Install the package in your project:
 npm install -D @build-in-blocks/dev.build
 ````
 
-#### 2. Add typescript config
+#### 2. Typescript installation and config setup
 
-Create a `tsconfig.json` file at the root of your web project, and add these:
+- Install the same `typescript` package version that this `@build-in-blocks` package uses, in your project:
 
-````
-{
-  "extends": "@build-in-blocks/devbuild/tsconfig.base.json",
-  "compilerOptions": {
-    "declarationDir": "./build",
-    "rootDir": "./src",
-  },
-  "include": ["src"],
-}
-````
+  ````
+  npm i -D typescript@^5.9.3
+  ````
+
+- Create a `tsconfig.json` file at the root of your web project, and add these:
+
+  ````
+  {
+    "extends": "@build-in-blocks/devbuild/tsconfig.base.json",
+    "compilerOptions": {
+      "declarationDir": "./build",
+      "rootDir": "./src",
+    },
+    "include": ["src"],
+  }
+  ````
 
 #### 3. Update your project's package.json
 
@@ -142,7 +148,7 @@ If you plan to run your web project in the browser, add a main `index.html` file
 
 ### Contributors
 
-Thanks to these amazing contributors to the **@build-in-blocks/dev.resources** project. This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. See [emoji key](https://allcontributors.org/docs/en/emoji-key). Contributions of any kind welcome!
+Thanks to these amazing contributors to the **@build-in-blocks/dev.build** project. This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. See [emoji key](https://allcontributors.org/docs/en/emoji-key). Contributions of any kind welcome!
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
