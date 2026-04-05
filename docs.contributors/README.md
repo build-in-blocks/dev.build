@@ -43,7 +43,7 @@ Follow the instructions to fork and clone this repository locally unto your comp
     ````
     PARENT-FOLDER/
     ├── dev.build/
-    └── your-web-app-or-library/
+    └── your-web-app-or-web-library/
     ````
 
 - **For library:** Open a terminal specifically for the library, cd into the root of the library folder and run the following script commands.
@@ -74,7 +74,7 @@ Follow the instructions to fork and clone this repository locally unto your comp
         npm link ../dev.build
         ```
 
-    - **Step 3:** Follow the usage instructions in the [root README.md](https://github.com/build-in-blocks/dev.build), not from the beginning though; start from the **2. Add typescript config** section (and continue till the end).
+    - **Step 3:** Follow the usage instructions in the [root README.md](https://github.com/build-in-blocks/dev.build), not from the beginning though; start from the **2. Typescript config setup** section (and continue till the end).
 
 #
 
