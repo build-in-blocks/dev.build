@@ -51,15 +51,11 @@ Install the package in your project:
 npm install -D @build-in-blocks/dev.build
 ````
 
-#### 2. Typescript installation and config setup
+#### 2. Typescript config setup
 
-- Install the same `typescript` package version that this `@build-in-blocks` package uses, in your project:
+- You DON'T need to install `typescript` into your web project (this library already does that internally, relative to your web project).
 
-  ````
-  npm i -D typescript@^5.9.3
-  ````
-
-- Create a `tsconfig.json` file at the root of your web project, and add these:
+- Just create a `tsconfig.json` file at the root of your web project, and add these:
 
   ````
   {
@@ -67,6 +63,8 @@ npm install -D @build-in-blocks/dev.build
     "compilerOptions": {
       "declarationDir": "./build",
       "rootDir": "./src",
+      "checkJs": false,
+      "skipLibCheck": true,
     },
     "include": ["src"],
   }

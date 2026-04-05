@@ -225,7 +225,11 @@ export default {
             // This ensures ts-loader uses the version of TS 
             // that sits right next to it in your engine.
             //----------------------------------------------
-              compiler: require.resolve('typescript'),
+            compiler: require.resolve('typescript'),
+            //-------------------------------------------------------------------
+            // HIDES ts-laoder related WARNINGS, so that users don't get confused
+            //-------------------------------------------------------------------
+            logLevel: 'error',
           },
         },
         //---------------------------------------------
