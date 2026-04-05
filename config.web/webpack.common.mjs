@@ -78,11 +78,11 @@ if (fs.existsSync(blocksConfigPath)) {
     blocksTerminalLogger(blocksConfigErrorObj);
   }
 } else {
-  // -----------------------------------------------------------------------------
-  // Setting blocksConfig.devBuild to empty object {} here, prevents errors i.e.
-  // Instead of adding optional chaining (?) to blocksConfig.devBuild.srcCodeFolder
-  // and blocksConfig.devBuild.entryFileName below.
-  // -----------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------
+  // Setting blocksConfig.devBuild to empty object here, prevents errors i.e. in
+  // addition to adding optional chaining (?) to blocksConfig.devBuild.srcCodeFolder
+  // and blocksConfig.devBuild.entryFileName e.t.c below.
+  // -------------------------------------------------------------------------------
   blocksConfig = {
     devBuild: {
       devServer: {},
@@ -90,10 +90,10 @@ if (fs.existsSync(blocksConfigPath)) {
   };
 }
 //-
-const blocksConfigSrcCodeFolder = blocksConfig.devBuild.srcCodeFolder;
-const blocksConfigEntryFileName = blocksConfig.devBuild.entryFileName;
-const blocksConfigDevServerPort = blocksConfig.devBuild.devServer?.port;
-const blocksConfigDevServerOpen = blocksConfig.devBuild.devServer?.open;
+const blocksConfigSrcCodeFolder = blocksConfig.devBuild?.srcCodeFolder;
+const blocksConfigEntryFileName = blocksConfig.devBuild?.entryFileName;
+const blocksConfigDevServerPort = blocksConfig.devBuild?.devServer?.port;
+const blocksConfigDevServerOpen = blocksConfig.devBuild?.devServer?.open;
 //-
 export const userAppSrcCodeFolder = blocksConfigSrcCodeFolder || _default.srcCodeFolder;
 const userAppEntryFileName = blocksConfigEntryFileName || _default.entryFileName;
