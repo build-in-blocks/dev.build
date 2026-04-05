@@ -9,17 +9,17 @@ export default merge(baseConfig, {
     path: path.resolve(userAppRoot, 'dist'),
     filename: '[name].js',
     chunkFilename: (pathData) => {
-      return getDynamicChunkFileName({ 
+      return getDynamicChunkFileName({
         pathData,
         mode: 'dev',
       });
     },
   },
-devServer: {
+  devServer: {
     static: {
-    // ----------------------------------------------------------------
-    // Tell the server WHERE the actual files are (The User's App Root)
-    // ----------------------------------------------------------------
+      // ----------------------------------------------------------------
+      // Tell the server WHERE the actual files are (The User's App Root)
+      // ----------------------------------------------------------------
       directory: path.resolve(userAppRoot, 'dist'),
     },
     //--------------------------------------
@@ -34,7 +34,7 @@ devServer: {
     // NEW: Force Webpack to save the files to your build/dist folder
     // -----------------------------------------------------------------
     devMiddleware: {
-      writeToDisk: true, 
+      writeToDisk: true,
     },
     // -----------------------------
     // Enable Hot Module Replacement
@@ -48,7 +48,7 @@ devServer: {
     // Fix for ESM: Ensure headers allow cross-origin if needed
     //---------------------------------------------------------
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      'Access-Control-Allow-Origin': '*',
     },
     //------------------------------------------------------------------------
     // Ensure client knows where to find the socket (crucial for custom roots)

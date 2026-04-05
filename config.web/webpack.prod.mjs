@@ -32,7 +32,7 @@ export default merge(baseConfig, {
     path: path.resolve(userAppRoot, 'build'),
     filename: '[name].js', // Since devtool is set to false, use stable name for published entry points
     chunkFilename: (pathData) => {
-      return getDynamicChunkFileName({ 
+      return getDynamicChunkFileName({
         pathData,
         mode: 'prod',
       });
