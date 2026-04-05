@@ -1,9 +1,7 @@
-import path from 'path';
-import { merge } from 'webpack-merge';
-import TerserPlugin from 'terser-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import { path, merge, TerserPlugin, BundleAnalyzerPlugin } from '../config.root/external.packages.js';
 //-
 import baseConfig, { getDynamicChunkFileName, userAppRoot } from './webpack.common.mjs';
+//-
 
 const sizeSummaryPlugin = {
   apply: (compiler) => {

@@ -1,5 +1,5 @@
-import path from 'path';
-import fs from 'fs';
+import { fs, path } from '../../config.root/external.packages.js';
+//-
 
 const renameRootTypeFileInBuildOutputFolder = () => {
   const _defaultDtsFileName = 'index.d.ts';

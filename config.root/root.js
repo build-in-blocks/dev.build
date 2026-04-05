@@ -1,9 +1,10 @@
-import { fileURLToPath, fs, path } from './external.packages.js';
+import { fs, path, fileURLToPath, createRequire } from './external.packages.js';
 
 // ------------------------------------------------
 // ESM & Resolution Helpers:
 // Recreate 'require' and '__dirname' for ESM scope
 // ------------------------------------------------
+const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -14,6 +15,10 @@ export {
   //-------------------------------
   // Export global access variables
   //-------------------------------
+  require,
+  __filename,
+  __dirname,
+  //-
   internalProjectRoot,
   internalPkgJSON,
 };

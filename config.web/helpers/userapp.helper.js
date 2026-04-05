@@ -1,5 +1,7 @@
-import path from 'path';
-import { _default } from '@build-in-blocks/dev.resources';
+import { path } from '../../config.root/external.packages.js';
+//-
+import { _default } from '../../config.root/blocks.packages.js';
+//-
 
 const blocksConfigTemplateCode = ({ exampleSrcCodeFolder, exampleEntryFileName }) => `
 import { BlocksConfig } from '@build-in-blocks/dev.resources';

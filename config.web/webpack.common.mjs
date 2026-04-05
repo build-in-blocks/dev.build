@@ -1,24 +1,11 @@
-import { blocksTerminalLogger } from '../config.root/blocks.packages.js';
+import { fs, path, pathToFileURL, register, webpack, HtmlWebpackPlugin } from '../config.root/external.packages.js';
 //-
-import { internalPkgJSON } from '../config.root/root.js';
+import { _default, blocksTerminalLogger } from '../config.root/blocks.packages.js';
 //-
-import webpack from 'webpack';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath, pathToFileURL } from 'url';
-import { createRequire, register } from 'module';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { require, __dirname, internalPkgJSON } from '../config.root/root.js';
 //-
-import { _default } from '@build-in-blocks/dev.resources';
 import { validateMainEntryFilePathInUserApp } from './validate/userapp.validate.js';
-
-// ------------------------------------------------
-// ESM & Resolution Helpers:
-// Recreate 'require' and '__dirname' for ESM scope
-// ------------------------------------------------
-const require = createRequire(import.meta.url);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+//-
 
 // -------------------------------------------------
 // Finds the exact path to the ts-loader file inside
@@ -48,26 +35,27 @@ const blocksConfigFileName = `blocks.config${_default.fileExtension}`;
 const blocksConfigPath = path.resolve(userAppRoot, blocksConfigFileName);
 let blocksConfig = {};
 //-
-const blocksConfigErrorObj = {
-  internalPackage: {
-    fullName: internalPkgJSON.name,
-  },
-  userApp: {
-    fullName: userAppPkgJSON.name,
-    errorMessage: `Could not load ${blocksConfigFileName}`,
-  },
-  errorSource: true,
-  suggestion: {
-    // prettier-ignore
-    messageList: [
+if (fs.existsSync(blocksConfigPath)) {
+  //-
+  const blocksConfigErrorObj = {
+    internalPackage: {
+      fullName: internalPkgJSON.name,
+    },
+    userApp: {
+      fullName: userAppPkgJSON.name,
+      errorMessage: `Could not load ${blocksConfigFileName}`,
+    },
+    errorSource: true,
+    suggestion: {
+      // prettier-ignore
+      messageList: [
           '→ Check that "type": "module" is present in your project\'s package.json',
           `→ Check that the correct import statement and blocks config object properties are used in your project's ${blocksConfigFileName}`,
         ],
-  },
-  processExit: true,
-};
-//-
-if (fs.existsSync(blocksConfigPath)) {
+    },
+    processExit: true,
+  };
+  //-
   try {
     // --------------------------------------------------------------------
     // Using the ts-node loader "register" configured earlier to allow node

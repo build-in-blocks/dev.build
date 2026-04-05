@@ -1,23 +1,13 @@
 #!/usr/bin/env node
 
+import { path, spawn, execSync } from '../config.root/external.packages.js';
+
 import { blocksTerminalLogger } from '../config.root/blocks.packages.js';
 //-
-import { internalPkgJSON } from '../config.root/root.js';
-
-import { spawn, execSync } from 'child_process';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { createRequire } from 'module';
-
+import { require, __dirname, internalPkgJSON } from '../config.root/root.js';
+//-
 import { renameRootTypeFileInBuildOutputFolder } from './helper/rename-root-type.js';
-
-// ------------------------------------------------
-// ESM & Resolution Helpers:
-// Recreate 'require' and '__dirname' for ESM scope
-// ------------------------------------------------
-const require = createRequire(import.meta.url);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+//-
 
 const userAppArg = {
   devBuild: 'dev:build',

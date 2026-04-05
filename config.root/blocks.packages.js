@@ -1,3 +1,9 @@
-import { blocksTerminalLogger } from '@build-in-blocks/dev.resources';
+import { _default, getCurrentFolderContent, blocksTerminalLogger } from '@build-in-blocks/dev.resources';
 
-export { blocksTerminalLogger };
+export {
+  //-
+  _default,
+  getCurrentFolderContent,
+  blocksTerminalLogger,
+  //-
+};

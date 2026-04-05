@@ -1,12 +1,11 @@
-import { blocksTerminalLogger } from '../../config.root/blocks.packages.js';
+import { fs, path } from '../../config.root/external.packages.js';
+//-
+import { _default, getCurrentFolderContent, blocksTerminalLogger } from '../../config.root/blocks.packages.js';
 //-
 import { internalPkgJSON } from '../../config.root/root.js';
 //-
-import fs from 'fs';
-import path from 'path';
-import { _default, getCurrentFolderContent } from '@build-in-blocks/dev.resources';
-//-
 import { validationErrorMessage, moreDetailsErrorText } from '../helpers/userapp.helper.js';
+//-
 
 export const validateMainEntryFilePathInUserApp = ({ userAppName, userAppRoot, userAppSrcCodeFolder, userAppEntryFileName, blocksConfigFileName, blocksConfigSrcCodeFolder, blocksConfigEntryFileName }) => {
   const hasFileExtension = ({ filePath }) => path.extname(filePath).length > 0;

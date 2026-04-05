@@ -1,6 +1,7 @@
-import path from 'path';
-import { merge } from 'webpack-merge';
+import { path, merge } from '../config.root/external.packages.js';
+//-
 import baseConfig, { getDynamicChunkFileName, userAppDevServerOpen, userAppDevServerPort, userAppRoot } from './webpack.common.mjs';
+//-
 
 export default merge(baseConfig, {
   mode: 'development',
