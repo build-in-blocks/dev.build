@@ -30,6 +30,10 @@ if (pkgArgDetected) {
   // The path to YOUR internal node_modules folder
   // ---------------------------------------------
   const internalModulesPath = path.resolve(__dirname, '../node_modules');
+  //---------------------------------------
+  // TSC from path from this shared library
+  //---------------------------------------
+  const tscPath = path.resolve(internalModulesPath, '.bin/tsc');
 
   //-------------------------------------------------------
   // Webpack config to use depending on mode or environment
@@ -88,11 +92,19 @@ if (pkgArgDetected) {
       console.log('============================================\n');
       console.log('[PROD] Bundling complete.\n[PROD] Generating type definitions...');
       try {
-        // -------------------------------------------------------
+        // --------------------------------------------------------------
+        // Execute the ENGINE'S internal tsc relative to the user project
+        // --------------------------------------------------------------
         // Run tsc to generate .d.ts files into the 'build' folder
         // Using the user app's local tsc
         // -------------------------------------------------------
-        execSync('npx tsc --emitDeclarationOnly', { stdio: 'inherit' });
+        execSync(`${tscPath} --emitDeclarationOnly`, {
+          stdio: 'inherit',
+          env: {
+            ...process.env,
+            NODE_PATH: internalModulesPath,
+          },
+        });
         //-
         renameRootTypeFileInBuildOutputFolder();
         //-

@@ -221,8 +221,17 @@ export default {
             // Point to the user app's config explicitly
             // -----------------------------------------
             configFile: path.resolve(userAppRoot, 'tsconfig.json'),
+            //----------------------------------------------
+            // This ensures ts-loader uses the version of TS 
+            // that sits right next to it in your engine.
+            //----------------------------------------------
+              compiler: require.resolve('typescript'),
           },
         },
+        //---------------------------------------------
+        // Ensure we ONLY process the user's app folder
+        //---------------------------------------------
+        include: path.resolve(userAppRoot, userAppSrcCodeFolder),
         //---------------------------------------------------------------------
         // Keeps @build-in-blocks processable while ignoring other node_modules
         // i.e. Make sure we ARE processing the blocks library from within the
