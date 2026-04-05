@@ -36,12 +36,21 @@ if (pkgArgDetected) {
   // Find the path to the webpack-cli executable within your library's dependencies
   // ------------------------------------------------------------------------------
   const webpackCliPath = require.resolve('webpack-cli/bin/cli.js');
+  // ---------------------------------------------
+  // The path to YOUR internal node_modules folder
+  // ---------------------------------------------
+  const internalModulesPath = path.resolve(__dirname, '../node_modules');
 
   //-------------------------------------------------------
   // Webpack config to use depending on mode or environment
   //-------------------------------------------------------
   const configFileName = isProd ? 'webpack.prod.mjs' : 'webpack.dev.mjs';
   const configPath = path.resolve(__dirname, '../config.web', configFileName);
+
+  // -------------------------------------------------------------------------
+  // (Related to webpack-dev-server) Use 'serve' for dev, no command for build
+  // -------------------------------------------------------------------------
+  const webpackAction = isProd ? [] : ['serve'];
 
   const webpackCmdArgs = [
     // ------------------------------------------------------------------
@@ -57,23 +66,31 @@ if (pkgArgDetected) {
     '--no-deprecation',
     //-----------------
     webpackCliPath, // Run the CLI script directly via node
+    ...webpackAction, // This adds 'serve' if command is 'dev'
     '--config',
     configPath,
     '--mode',
     mode,
   ];
 
-  const isDev = args_[0] === userAppArg.devBuild;
-  if (isDev) {
-    webpackCmdArgs.push('--watch');
-  }
-
-  // ---------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------
   // Spawn 'node' instead of 'npx' or 'webpack' directly
   // This is safer, avoids shell vulnerabilities, and ensures it finds the right files.
-  // ---------------------------------------------------------------------------------
+  // ----------------------------------------------------------------------------------
   const spawnChildProcess = spawn(process.execPath, webpackCmdArgs, {
     stdio: 'inherit',
+    // -------------------------------------------------
+    // Spawn the Process with the "Ghost Dependency" Fix
+    // -------------------------------------------------
+    env: {
+      ...process.env,
+      //---------------------------------------------------------
+      // CRITICAL: This tells Webpack to look in YOUR framework's
+      // node_modules to find webpack-dev-server, keeping the
+      // User App's node_modules completely clean.
+      //---------------------------------------------------------
+      NODE_PATH: internalModulesPath,
+    },
   });
 
   spawnChildProcess.on('exit', (code) => {

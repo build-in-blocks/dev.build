@@ -85,12 +85,17 @@ if (fs.existsSync(blocksConfigPath)) {
   // and blocksConfig.devBuild.entryFileName below.
   // -----------------------------------------------------------------------------
   blocksConfig = {
-    devBuild: {},
+    devBuild: {
+      devServer: {},
+    },
   };
 }
 //-
 const blocksConfigSrcCodeFolder = blocksConfig.devBuild.srcCodeFolder;
 const blocksConfigEntryFileName = blocksConfig.devBuild.entryFileName;
+//-
+export const blocksConfigDevServerPort = blocksConfig.devBuild.devServer.port;
+export const blocksConfigDevServerOpen = blocksConfig.devBuild.devServer.open;
 //-
 export const userAppSrcCodeFolder = blocksConfigSrcCodeFolder || _default.srcCodeFolder;
 const userAppEntryFileName = blocksConfigEntryFileName || _default.entryFileName;
@@ -301,6 +306,10 @@ export default {
             filename: 'index.html',
             template: userAppHtmlTemplate,
             inject: 'body',
+            // -------------------------------------------------------------------------------
+            // CRITICAL (webpack-dev-server): This tells Webpack to use <script type="module">
+            // -------------------------------------------------------------------------------
+            scriptLoading: 'module',
           }),
         ]
       : []),
