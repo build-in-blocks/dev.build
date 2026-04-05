@@ -48,6 +48,25 @@ const blocksConfigFileName = `blocks.config${_default.fileExtension}`;
 const blocksConfigPath = path.resolve(userAppRoot, blocksConfigFileName);
 let blocksConfig = {};
 //-
+const blocksConfigErrorObj = {
+  internalPackage: {
+    fullName: internalPkgJSON.name,
+  },
+  userApp: {
+    fullName: userAppPkgJSON.name,
+    errorMessage: `Could not load ${blocksConfigFileName}`,
+  },
+  errorSource: true,
+  suggestion: {
+    // prettier-ignore
+    messageList: [
+          '→ Check that "type": "module" is present in your project\'s package.json',
+          `→ Check that the correct import statement and blocks config object properties are used in your project's ${blocksConfigFileName}`,
+        ],
+  },
+  processExit: true,
+};
+//-
 if (fs.existsSync(blocksConfigPath)) {
   try {
     // --------------------------------------------------------------------
@@ -58,25 +77,17 @@ if (fs.existsSync(blocksConfigPath)) {
     // --------------------------------------------------------------------
     const module = await import(pathToFileURL(blocksConfigPath).href);
     blocksConfig = module.default || module;
+    //-------------------------------------------------------------------------
+    // For when blocks config exists, but the file is either empty, all content
+    // commented out. In summary, when there's no recognised default export in
+    // the blocks config file.
+    //-------------------------------------------------------------------------
+    const noDefaultExportInBlocksConfigFile = Object.keys(module).length === 0;
+    if (noDefaultExportInBlocksConfigFile) {
+      blocksTerminalLogger(blocksConfigErrorObj);
+    }
   } catch {
-    blocksTerminalLogger({
-      internalPackage: {
-        fullName: internalPkgJSON.name,
-      },
-      userApp: {
-        fullName: userAppPkgJSON.name,
-        errorMessage: `Could not load ${blocksConfigFileName}`,
-      },
-      errorSource: true,
-      suggestion: {
-        // prettier-ignore
-        messageList: [
-          '→ Check that "type": "module" is present in your project\'s package.json',
-          `→ Check that the correct import statement and blocks config object properties are used in your project's ${blocksConfigFileName}`,
-        ],
-      },
-      processExit: true,
-    });
+    blocksTerminalLogger(blocksConfigErrorObj);
   }
 } else {
   // -----------------------------------------------------------------------------
@@ -93,12 +104,13 @@ if (fs.existsSync(blocksConfigPath)) {
 //-
 const blocksConfigSrcCodeFolder = blocksConfig.devBuild.srcCodeFolder;
 const blocksConfigEntryFileName = blocksConfig.devBuild.entryFileName;
-//-
-export const blocksConfigDevServerPort = blocksConfig.devBuild.devServer.port;
-export const blocksConfigDevServerOpen = blocksConfig.devBuild.devServer.open;
+const blocksConfigDevServerPort = blocksConfig.devBuild.devServer?.port;
+const blocksConfigDevServerOpen = blocksConfig.devBuild.devServer?.open;
 //-
 export const userAppSrcCodeFolder = blocksConfigSrcCodeFolder || _default.srcCodeFolder;
 const userAppEntryFileName = blocksConfigEntryFileName || _default.entryFileName;
+export const userAppDevServerPort = blocksConfigDevServerPort || 3000;
+export const userAppDevServerOpen = blocksConfigDevServerOpen || false;
 
 const entryFilePath = path.resolve(userAppRoot, userAppSrcCodeFolder, userAppEntryFileName);
 
