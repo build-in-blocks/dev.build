@@ -22,10 +22,6 @@
 
 #
 
-**Dependency:** `@build-in-blocks` framework libraries that have `dev.` in their name are only useful for local development, and should only be installed as a `devDependency` in your project.
-
-#
-
 **User guide:** See [docs.users README.md](https://github.com/build-in-blocks/dev.build/blob/develop/docs.users/README.md)
 
 #
@@ -41,7 +37,7 @@
 ### Quick installation & usage guide
 
 > [!NOTE]  
-> Also see user guide 👆🏽 for more detailed guide on what's included in this package, how to go about code splitting, accessing your app's metadata and bundle analysis.
+> Also see user guide 👆🏽 for more detailed guide on what's included in this package, how to go about dev server customization, code splitting, accessing your web app's metadata and bundle analysis.
 
 #### 1. Main package installation
 

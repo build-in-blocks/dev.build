@@ -12,6 +12,9 @@
 #
 
 #### This library and connected user apps
+
+- This library requires you to build/generate a new bundle for consumption - Don't forget to run the `build` script command before publishing.
+
 - Before release (of your "user app" - e.g. dom.autoquery in this case), you always have to check that npx is referencing the correct/updated version in the scripts section of the package.json e.g. @1.0.0 in this case.
 
     ````
@@ -21,8 +24,6 @@
         // your other npm scripts in your project goes here as usual
     },
     ````
-
-- Does the user app/package require you to build/generate a new bundle for consumption? - Don't forget to run the `build` script command before publishing.
 
 #
 
