@@ -59,6 +59,8 @@ Follow the instructions to fork and clone this repository locally unto your comp
     ```
     npm link
     ```
+    > [!NOTE]  
+    > You can comment out  `'--no-deprecation'` flag used in the webpack args, in the `pkg.internal.cli.js` file when developing locally (just for debugging purpose when needed, make sure to not commit and push this change to git).
 
 - **For your web app (or web library):** Open a terminal specifically for your web app (or web library), cd into the root of your web app (or web library).
     - **Step 1:** First install the npm dependencies in your web app (or web library).

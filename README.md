@@ -18,7 +18,7 @@
 
 #
 
-**Description:** The **@build-in-blocks/dev.build** package contains preconfigured `webpack` setup for both development and production environment. After installation in your web project (and with very minimal intervention on your end), you just need to run `npm run dev` to generate a development mode bundle or `npm run build` to generate a well optimized production mode bundle.
+**Description:** Build production-ready typescript web apps (or web-based libraries) without your regular javascript/typescript web frameworks, with ease and speed. The **@build-in-blocks/dev.build** package contains preconfigured `webpack` setup for both development and production environment. After installation in your web project (and with very minimal intervention on your end), you just need to run `npm run dev` to generate a development mode bundle or `npm run build` to generate a well optimized production mode bundle.
 
 #
 
@@ -37,7 +37,7 @@
 ### Quick installation & usage guide
 
 > [!NOTE]  
-> Also see user guide 👆🏽 for more detailed guide on what's included in this package, how to go about dev server customization, code splitting, accessing your web app's metadata and bundle analysis.
+> Also see user guide 👆🏽 for more detailed guide on what's included in this package (out of the box), how to go about dev server customization, code splitting and lazy loading, accessing your web app's metadata and bundle analysis.
 
 #### 1. Main package installation
 
