@@ -151,6 +151,7 @@ Thanks to these amazing contributors to the **@build-in-blocks/dev.build** proje
   <tbody>
     <tr>
       <td align="center" valign="top" width="16.66%"><a href="https://github.com/Ifycode"><img src="https://avatars.githubusercontent.com/u/45185388?v=4?s=100" width="100px;" alt="Mary @Ifycode"/><br /><sub><b>Mary @Ifycode</b></sub></a><br /><a href="https://github.com/build-in-blocks/dev.build/commits?author=Ifycode" title="Code">💻</a> <a href="https://github.com/build-in-blocks/dev.build/commits?author=Ifycode" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="16.66%"><a href="https://github.com/apps/all-contributors"><img src="https://avatars.githubusercontent.com/u/649578?v=4?s=100" width="100px;" alt="all-contributors[bot]"/><br /><sub><b>all-contributors[bot]</b></sub></a><br /><a href="#tool-all-contributors[bot]" title="Tools">🔧</a> <a href="https://github.com/build-in-blocks/dev.build/commits?author=all-contributors[bot]" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
