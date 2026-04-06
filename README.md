@@ -61,7 +61,7 @@
 
   ````
   {
-    "extends": "@build-in-blocks/devbuild/tsconfig.base.json",
+    "extends": "@build-in-blocks/dev.build/tsconfig.base.json",
     "compilerOptions": {
       "declarationDir": "./build",
       "rootDir": "./src",
