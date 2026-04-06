@@ -41,11 +41,17 @@
 
 #### 1. Main package installation
 
-Install the package in your project:
+- Install the package in your web project:
 
-````
-npm install -D @build-in-blocks/dev.build
-````
+  ````
+  npm install -D @build-in-blocks/dev.build
+  ````
+
+- Also make sure to install the resources package, as this will be useful later (also so that your web app code can compile successfully without errors):
+  
+  ````
+  npm install -D @build-in-blocks/@build-in-blocks/dev.resources
+  ````
 
 #### 2. Typescript config setup
 
@@ -111,9 +117,7 @@ npm install -D @build-in-blocks/dev.build
 
   export default blocksConfig;
   ````
-  > [!NOTE]  
-  > You'll need to install the `@build-in-blocks/dev.resources` package in your web project.
-  
+
   > [!NOTE]  
   > You'll also need to update your web project's `tsconfig.json` file's `include` array and `rootDir` i.e. change `"src"` to `"app"`.
 
