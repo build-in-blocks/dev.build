@@ -16,7 +16,9 @@ const userAppArg = {
 
 const args_ = process.argv.slice(2);
 
-const pkgArgDetected = args_.length === 1 && (args_[0] === userAppArg.devBuild || args_[0] === userAppArg.prodBuild);
+const pkgArgDetected =
+  args_.length === 1 &&
+  (args_[0] === userAppArg.devBuild || args_[0] === userAppArg.prodBuild);
 
 if (pkgArgDetected) {
   const isProd = args_[0] === userAppArg.prodBuild;
@@ -30,10 +32,13 @@ if (pkgArgDetected) {
   // The path to YOUR internal node_modules folder
   // ---------------------------------------------
   const internalModulesPath = path.resolve(__dirname, '../node_modules');
-  //---------------------------------------
-  // TSC from path from this shared library
-  //---------------------------------------
-  const tscPath = path.resolve(internalModulesPath, '.bin/tsc');
+  //---------------------------------------------------------------
+  // Let Node's resolution engine find where typescript is actually
+  // installed, in order to find and use TSC (from path) from this
+  // shared library
+  //---------------------------------------------------------------
+  const tsPath = require.resolve('typescript');
+  const tscPath = path.resolve(path.dirname(tsPath), '../bin/tsc');
 
   //-------------------------------------------------------
   // Webpack config to use depending on mode or environment
@@ -90,7 +95,9 @@ if (pkgArgDetected) {
   spawnChildProcess.on('exit', (code) => {
     if (code === 0 && isProd) {
       console.log('============================================\n');
-      console.log('[PROD] Bundling complete.\n[PROD] Generating type definitions...');
+      console.log(
+        '[PROD] Bundling complete.\n[PROD] Generating type definitions...',
+      );
       try {
         // --------------------------------------------------------------
         // Execute the ENGINE'S internal tsc relative to the user project
