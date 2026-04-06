@@ -50,7 +50,7 @@
 - Also make sure to install the resources package, as this will be useful later (also so that your web app code can compile successfully without errors):
   
   ````
-  npm install -D @build-in-blocks/@build-in-blocks/dev.resources
+  npm install -D @build-in-blocks/dev.resources
   ````
 
 #### 2. Typescript config setup
@@ -78,8 +78,8 @@
 
   ````
   "scripts": {
-    "dev": "npx @build-in-blocks/dev.build@1.0.1 dev:build",
-    "build": "npx @build-in-blocks/dev.build@1.0.1 prod:build"
+    "dev": "npx @build-in-blocks/dev.build@1.0.2 dev:build",
+    "build": "npx @build-in-blocks/dev.build@1.0.2 prod:build"
     // your other npm scripts in your project goes here as usual
   },
   ````
