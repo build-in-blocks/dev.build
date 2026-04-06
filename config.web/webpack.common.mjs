@@ -222,7 +222,7 @@ export default {
             // -----------------------------------------
             configFile: path.resolve(userAppRoot, 'tsconfig.json'),
             //----------------------------------------------
-            // This ensures ts-loader uses the version of TS 
+            // This ensures ts-loader uses the version of TS
             // that sits right next to it in your engine.
             //----------------------------------------------
             compiler: require.resolve('typescript'),
