@@ -1,6 +1,6 @@
 # @build-in-blocks/dev.build
 
-![Latest Version](https://img.shields.io/npm/v/@build-in-blocks/dev.build.svg?label=latest&color=brightgreen&style=flat-square) [![Npm package total downloads](https://flat.badgen.net/npm/dt/@build-in-blocks/dev.build?color=blue)](https://npmjs.com/package/@build-in-blocks/dev.build) ![build passing](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)
+![Latest Version](https://img.shields.io/npm/v/@build-in-blocks/dev.build.svg?label=latest&color=brightgreen&style=flat-square) ![NPM Downloads](https://img.shields.io/npm/d18m/%40build-in-blocks%2Fdev.build?color=blue&label=downloads%20(last%2018%20months)) ![build passing](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)
 
 [![License: AGPL v3.0](https://img.shields.io/badge/license-AGPL%20v3.0-blue.svg?style=flat-square)](https://www.gnu.org/licenses/agpl-3.0) [![All Contributors](https://img.shields.io/github/all-contributors/build-in-blocks/dev.build?color=ee8449&style=flat-square)](#contributors) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/build-in-blocks/dev.build/blob/develop/docs.contributors/README.md)
 
@@ -55,7 +55,7 @@
 
 #### 2. Typescript config setup
 
-- You DON'T need to install `typescript` into your web project (this library already does that internally, relative to your web project).
+- You DON'T need to install `typescript` into your web project (this library already does that internally, relative to your web project). See `typescript` table in the general guide for more information: [Typescript compatibility and usage](https://github.com/build-in-blocks/.github/wiki/Repo-User-Guide-Extension#table-typescript-compatibility-and-usage).
 
 - Just create a `tsconfig.json` file at the root of your web project, and add these:
 
