@@ -11,9 +11,9 @@ User installation and setup instructions can in the [root README.md](https://git
 
 #
 
-### Dependency Information
+### User guide extension
 
-`@build-in-blocks` framework libraries that have `dev.` in their name are only useful for local development, and should only be installed as a `devDependency` in your **web app**. If you are using a particular `dev.` package to build a **library** you wish to publish, and your library's end users will need to access that `dev.` packages' functionality or interface, in this case you will need to install it as a `dependency` instead.
+More info on **@build-in-blocks** framework libraries in general can be found at: https://github.com/build-in-blocks/.github/wiki/Repo-User-Guide-Extension
 
 #
 

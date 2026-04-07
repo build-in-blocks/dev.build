@@ -33,6 +33,8 @@
 
 - **Ensure related-code works:** Check that all features to be released in the new version are working as expected, and are complete as shown on our project board.
 
+- **General user guide updates:** Check that the wiki for the general user guide is updated when e.g. typescript version and compatibility has changed in the library's code.
+
 - **Confirm package.json & docs content:** Always confirm that the content of the `package.json` (`scripts`, the `keywords` array etc.), as well as the **root README**, **user docs**, **contributor docs** and **release docs** content are in good/acceptable shape for the release.
 
 - **Version bumping:** Pending the time when we will automate the version bumping process, always remember to update the version number to a new one in the `package.json` file.
