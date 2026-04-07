@@ -11,7 +11,13 @@
 
 #
 
-#### This library and connected user apps
+#### This library
+
+- In the **root README**, always remember to change `@build-in-blocks/dev.build@[VERSION_NUMBER]` for the npm scripts part of the docs too, as you bump up the `package.json` version.
+
+#
+
+#### Connected user apps
 
 - The "user app" built with this library requires you to build/generate a new bundle for consumption - Don't forget to run the `build` script command before publishing.
 
