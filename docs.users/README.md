@@ -28,7 +28,9 @@ These `webpack` config settings are applied to your web app once your run the de
 ||Both|Development |Production|
 |:-- |:-- |:-- |:-- |
 |`index.html` copy and entry `.js` file injection in the html in output build|Yes |- |- |
+|Code splitting & lazy loading |Yes |- |- |
 |Tree shaking (TS/JS only for now)|Yes |- |- |
+|Get app info |Yes |- |- |
 |Minification and comment removed in output build|- | No |Yes|
 |`contenthash` in output chunk file names|- | No |Yes|
 |Output files "Build Size Summary" in terminal|- | No |Yes|
