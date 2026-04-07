@@ -42,7 +42,7 @@ export const validateMainEntryFilePathInUserApp = ({ userAppName, userAppRoot, u
       },
       userApp: {
         fullName: userAppName,
-        errorMessage: `Main file "${entryFilePathWithTSextension}" does not exist.`,
+        errorMessage: `Entry file "${entryFilePathWithTSextension}" does not exist.`,
       },
       errorSource: true,
       suggestion: {
@@ -50,7 +50,7 @@ export const validateMainEntryFilePathInUserApp = ({ userAppName, userAppRoot, u
           showCurrentState: true,
           referenceMessage: blocksConfigReference,
         },
-        messageList: [`→ Create main file "${entryFilePathWithTSextension}" in your project.`],
+        messageList: [`→ Create entry file "${entryFilePathWithTSextension}" in your project.`],
       },
     });
 
