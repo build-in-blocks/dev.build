@@ -76,29 +76,63 @@ To use your own preferred settings, add a `blocks.config.ts` file at the root of
 
 ### Code splitting and lazy loading
 
-E.g. For this code located at `your-source-code-folder-name-here/dummy/console.ts` file:
+E.g. copy this code and put it inside `your-source-code-folder-name-here/dummy/console.ts` file:
 
 ````
 export const dummyConsole = () => {
-  console.log('dummy console module! Yay!');
-};
+  console.log('1. dummy CONSOLE module!');
+}
 ````
 
-Call it else where (i.e. in another file e.g. your entry file) using dynamic import, so that it gets split into a separate output file:
+Also copy this code and put it inside `your-source-code-folder-name-here/dummy/example.ts` file:
 
 ````
-const { dummyConsoleCode } = await import(
+export const dummyLazyLoadExample = () => {
+  console.log('2. dummy EXAMPLE - LAZY LOADED module! YAY!');
+}
+````
+
+Add the lazy load button in your your `index.html` file:
+
+````
+<button id="lazy-load-me">Click me to lazy load the example module!</button>
+````
+
+Call them else where (e.g. your `.ts` entry file) using dynamic import, so that it gets split into a separate output file:
+
+````
+const app = async() => {
+  //-------------------------------------------------
+  // This module loads immediately the web page loads
+  //-------------------------------------------------
+  const { dummyConsole } = await import(
     /* webpackChunkName: "dummy.console" */
     /* webpackExclude: /\.d\.ts$/ */
     './dummy/console'
-);
-dummyConsoleCode();
+  );
+  dummyConsole();
+
+  //----------------------------------------------------------
+  // This module will not be loaded until you click the button
+  //----------------------------------------------------------
+  const lazyLoadButton = document.querySelector('#lazy-load-me');
+  lazyLoadButton?.addEventListener('click', async() => {
+    const { dummyLazyLoadExample } =awaitimport(
+      /* webpackChunkName: "dummy.example" */
+      /* webpackExclude: /\.d\.ts$/ */
+      './dummy/example'
+    );
+    dummyLazyLoadExample();
+  });
+}
+
+app();
 ````
 
-To lazy load, just use the dynamic import inside an event listener based on user activity e.g. on click.
+Observe your browser dev tool's `console` and `network` tabs to see that the first module loads immediately the page loads, while the second module only loads (i.e. is **lazy loaded**) after you trigger a browser `event` (e.g. button `click` in this case).
 
 > [!NOTE]  
-> Include the webpack comments if you want your output files to have a recognizable name.
+> Include the webpack comments if you want your output files to have a recognizable name. Check the `chunks` folder inside your `dist` or `build` output folders to see it take effect.
 
 #
 
@@ -107,15 +141,28 @@ To lazy load, just use the dynamic import inside an event listener based on user
 Add this to your web app's entry file to see your app's metadata:
 
 ````
+//------------------------------------
+// Function to get your web app's info
+//------------------------------------
 export const getAppInfo = async () => {
   const response = await fetch('./metadata.json');
   const info = await response.json();
   return info;
-};
+}
 
-const appInfo = getAppInfo();
-console.log(`Running version ${appInfo.version} built on ${appInfo.buildDate}`);
+const app = async() => {
 
+  // Your other code here as usual
+
+  //----------------------------
+  // Display your web app's info
+  //----------------------------
+  const appInfo = await getAppInfo();
+  console.log(appInfo);
+  console.log(`Running version ${appInfo.version} built on ${appInfo.buildDate}`);
+}
+
+app();
 ````
 
 #
