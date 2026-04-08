@@ -14,7 +14,7 @@
 
 #
 
-**Overview:** Production and development bundler build setup for your `typescript` and `javascript` web-related code repositories.
+**Overview:** Production and development bundler build setup for your `typescript` web-related code repositories.
 
 #
 
