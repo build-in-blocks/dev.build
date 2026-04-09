@@ -41,7 +41,7 @@
 
 #### 1. Main package installation
 
-- Install the package in your web project:
+- Install our dev build package as a `devDependency` in your project:
 
   ````
   npm install -D @build-in-blocks/dev.build --save-exact
