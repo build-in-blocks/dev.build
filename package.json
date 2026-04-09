@@ -1,7 +1,7 @@
 {
   "name": "@build-in-blocks/dev.build",
   "version": "1.0.4",
-  "description": "Production and development bundler build setup for your typescript and javascript web-related code repositories.",
+  "description": "Production and development bundler build setup for your typescript web-related projects.",
   "type": "module",
   "bin": {
     "@build-in-blocks/dev.build": "bin/pkg.internal.cli.js",

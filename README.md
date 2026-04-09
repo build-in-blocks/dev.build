@@ -14,7 +14,7 @@
 
 #
 
-**Overview:** Production and development bundler build setup for your `typescript` web-related code repositories.
+**Overview:** Production and development bundler build setup for your `typescript` web-related projects.
 
 #
 
@@ -44,13 +44,13 @@
 - Install the package in your web project:
 
   ````
-  npm install -D @build-in-blocks/dev.build
+  npm install -D @build-in-blocks/dev.build --save-exact
   ````
 
 - Also make sure to install the resources package, as this will be useful later (also so that your web app code can compile successfully without errors):
   
   ````
-  npm install -D @build-in-blocks/dev.resources
+  npm install -D @build-in-blocks/dev.resources --save-exact
   ````
 
 #### 2. Typescript config setup
