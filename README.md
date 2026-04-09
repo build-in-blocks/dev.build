@@ -78,8 +78,8 @@
 
   ````
   "scripts": {
-    "dev": "npx @build-in-blocks/dev.build@1.0.3 dev:build",
-    "build": "npx @build-in-blocks/dev.build@1.0.3 prod:build"
+    "dev": "npx @build-in-blocks/dev.build@1.0.4 dev:build",
+    "build": "npx @build-in-blocks/dev.build@1.0.4 prod:build"
     // your other npm scripts in your project goes here as usual
   },
   ````
