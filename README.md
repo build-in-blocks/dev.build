@@ -37,7 +37,7 @@
 ### Quick installation & usage guide
 
 > [!NOTE]  
-> Also see user guide 👆🏽 for more detailed guide on what's included in this package (out of the box), how to go about dev server customization, code splitting and lazy loading, accessing your web app's metadata and bundle analysis.
+> Also see user guide 👆🏽 for more detailed guide on what's included in this package (out of the box) and customization.
 
 #### 1. Main package installation
 
