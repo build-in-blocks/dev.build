@@ -35,8 +35,9 @@ These `webpack` config settings are applied to your web app once your run the de
 |`contenthash` in output chunk file names|- | No |Yes|
 |Output files "Build Size Summary" in terminal|- | No |Yes|
 |Bundle analysis|- |No |Yes|
-|Dev server|- |Yes |No|
+|Dev server (with customization) |- |Yes |No|
 |(eval) source-map debugging in browser|- |Yes |No|
+|CSS and images |Not yet supported | Not yet supported |Not yet supported |
 
 #
 
@@ -119,7 +120,7 @@ const app = async() => {
   //----------------------------------------------------------
   const lazyLoadButton = document.querySelector('#lazy-load-me');
   lazyLoadButton?.addEventListener('click', async() => {
-    const { dummyLazyLoadExample } =awaitimport(
+    const { dummyLazyLoadExample } = await import(
       /* webpackChunkName: "dummy.example" */
       /* webpackExclude: /\.d\.ts$/ */
       './dummy/example'
@@ -139,6 +140,12 @@ Observe your browser dev tool's `console` and `network` tabs to see that the fir
 #
 
 ### Getting your web app's metadata
+
+Add this app mode element in your your `index.html` file:
+
+````
+<h3>mode: <span id="app-mode"></span></h3>
+````
 
 Add this to your web app's entry file to see your app's metadata:
 
@@ -162,6 +169,11 @@ const app = async() => {
   const appInfo = await getAppInfo();
   console.log(appInfo);
   console.log(`Running version ${appInfo.version} built on ${appInfo.buildDate}`);
+  //-
+  const appModeElement = document.querySelector('#app-mode');
+  if (appModeElement) {
+    appModeElement.textContent = appInfo.environment;
+  }
 }
 
 app();
