@@ -4,13 +4,7 @@ import { path, spawn, execSync } from '../config.root/external.packages.js';
 
 import { blocksTerminalLogger } from '../config.root/blocks.packages.js';
 //-
-import {
-  require,
-  __dirname,
-  internalPkgJSON,
-  isWindowsOS,
-  windowsCmdextension,
-} from '../config.root/root.js';
+import { require, __dirname, internalPkgJSON, isWindowsOS, windowsCmdextension } from '../config.root/root.js';
 //-
 import { renameRootTypeFileInBuildOutputFolder } from './helper/rename-root-type.js';
 //-
@@ -22,9 +16,7 @@ const userAppArg = {
 
 const args_ = process.argv.slice(2);
 
-const pkgArgDetected =
-  args_.length === 1 &&
-  (args_[0] === userAppArg.devBuild || args_[0] === userAppArg.prodBuild);
+const pkgArgDetected = args_.length === 1 && (args_[0] === userAppArg.devBuild || args_[0] === userAppArg.prodBuild);
 
 if (pkgArgDetected) {
   const isProd = args_[0] === userAppArg.prodBuild;
@@ -101,9 +93,7 @@ if (pkgArgDetected) {
   spawnChildProcess.on('exit', (code) => {
     if (code === 0 && isProd) {
       console.log('============================================\n');
-      console.log(
-        '[PROD] Bundling complete.\n[PROD] Generating type definitions...',
-      );
+      console.log('[PROD] Bundling complete.\n[PROD] Generating type definitions...');
       try {
         // --------------------------------------------------------------
         // Execute the ENGINE'S internal tsc relative to the user project
@@ -111,9 +101,7 @@ if (pkgArgDetected) {
         // Run tsc to generate .d.ts files into the 'build' folder
         // Using the user app's local tsc
         // -------------------------------------------------------
-        const tscPathForRelevantOS = isWindowsOS
-          ? `tsc${windowsCmdextension}`
-          : tscPath; // This check makes it compatible with Windows OS (in production)
+        const tscPathForRelevantOS = isWindowsOS ? `tsc${windowsCmdextension}` : tscPath; // This check makes it compatible with Windows OS (in production)
         execSync(`${tscPathForRelevantOS} --emitDeclarationOnly`, {
           stdio: 'inherit',
           env: {
