@@ -74,18 +74,27 @@
 
 #### 3. Update your project's package.json
 
-- **Add dev and build scripts:** In your web project's `package.json` file, add the `dev` and `build` scripts:
+- **Add dev and build scripts:** In your web project's `package.json` file, add the `dev` and `build` scripts.
 
-  ````
-  "scripts": {
-    "dev": "npx @build-in-blocks/dev.build@1.0.4 dev:build",
-    "build": "npx @build-in-blocks/dev.build@1.0.4 prod:build"
-    // your other npm scripts in your project goes here as usual
-  },
-  ````
+  - For `macOS` and `linux`, use:
 
-  > [!IMPORTANT]  
-  > About `@build-in-blocks/dev.build@[VERSION_NUMBER_HERE]` in the scripts: Make sure the version number used your in your `dev` and `build` scripts is the same as the version of the `@build-in-blocks/dev.build` package in your `package.json` file's `devDependencies`.
+    ````
+    "scripts": {
+      "dev": "blocks.pkg.dev.build dev:build",
+      "build": "blocks.pkg.dev.build prod:build"
+      // your other npm scripts in your project goes here as usual
+    },
+    ````
+
+  - For `windows OS`, use:
+
+    ````
+    "scripts": {
+      "dev": "blocks.pkg.dev.build.cmd dev:build",
+      "build": "blocks.pkg.dev.build.cmd prod:build"
+      // your other npm scripts in your project goes here as usual
+    },
+    ````
 
 - **You need this too:** Add these in the your web project's `package.json` file too:
 
