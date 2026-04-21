@@ -1,8 +1,8 @@
-import { fs, path, pathToFileURL, register, webpack, HtmlWebpackPlugin } from '../config.root/external.packages.js';
+import { fs, path, pathToFileURL, register, webpack, HtmlWebpackPlugin, TsconfigPathsPlugin } from '../config.root/external.packages.js';
 //-
 import { _default, blocksTerminalLogger } from '../config.root/blocks.packages.js';
 //-
-import { require, __dirname, internalPkgJSON } from '../config.root/root.js';
+import { require, __dirname, internalPkgJSON, supportingTSconfigName } from '../config.root/root.js';
 //-
 import { validateMainEntryFilePathInUserApp } from './validate/userapp.validate.js';
 //-
@@ -197,6 +197,13 @@ export const getDynamicChunkFileName = ({ pathData, mode }) => {
   return chunkFilename({ mode });
 };
 
+// -------------------------------------------------------------
+// Libraries only: supportingTSconfigPath location from user app
+// Related to Typescript @ import alias error prevention
+// -------------------------------------------------------------
+const supportingTSconfigPath = path.join(userAppRoot, supportingTSconfigName);
+
+
 export default {
   // ----------------------------------------------------------
   // Ensure Webpack knows we are working on the User app's code
@@ -256,7 +263,16 @@ export default {
     ],
   },
   resolve: {
-    extensions: [_default.fileExtension, '.js'], // TODO: [Maybe later if needed] | Add these other extensions to the array: '.tsx', '.jsx'
+    plugins: [
+      ...(fs.existsSync(supportingTSconfigPath)
+      ? [
+          new TsconfigPathsPlugin({
+            configFile: supportingTSconfigPath, // Prevent Typescript @ import alias error: read user app's @ aliases automatically!
+          })
+        ]
+      : []),
+    ],
+    extensions: [_default.fileExtension, '.js', '.mjs', '.json'], // TODO: [Maybe later if needed] | Add these other extensions to the array: '.tsx', '.jsx'
     alias: {
       //---------------------------------------------------------------------------------------------
       // Force Webpack to resolve library imports to the library's source

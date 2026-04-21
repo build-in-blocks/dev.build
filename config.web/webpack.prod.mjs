@@ -1,4 +1,5 @@
 import { path, merge, TerserPlugin, BundleAnalyzerPlugin } from '../config.root/external.packages.js';
+import { buildOutputFolderName } from '../config.root/root.js';
 //-
 import baseConfig, { getDynamicChunkFileName, userAppRoot } from './webpack.common.mjs';
 //-
@@ -27,7 +28,7 @@ export default merge(baseConfig, {
   mode: 'production',
   devtool: false, // Disable source maps in production (for now)
   output: {
-    path: path.resolve(userAppRoot, 'build'),
+    path: path.resolve(userAppRoot, buildOutputFolderName),
     filename: '[name].js', // Since devtool is set to false, use stable name for published entry points
     chunkFilename: (pathData) => {
       return getDynamicChunkFileName({
