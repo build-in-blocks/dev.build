@@ -1,25 +1,42 @@
 #!/usr/bin/env node
 
-import { path, spawn, execSync } from '../config.root/external.packages.js';
+import { fs, path, spawn, execSync } from '../config.root/external.packages.js';
 
 import { blocksTerminalLogger } from '../config.root/blocks.packages.js';
 //-
-import { require, __dirname, internalPkgJSON, isWindowsOS, windowsCmdextension } from '../config.root/root.js';
+import {
+  require,
+  __dirname,
+  internalPkgJSON,
+  isWindowsOS,
+  windowsCmdextension,
+  distProdFolderName,
+  supportingTSconfigName,
+  buildOutputFolderName,
+} from '../config.root/root.js';
 //-
 import { renameRootTypeFileInBuildOutputFolder } from './helper/rename-root-type.js';
+import { userAppPkgJSON, userAppRoot } from '../config.web/webpack.common.mjs';
 //-
 
 const userAppArg = {
   devBuild: 'dev:build',
   prodBuild: 'prod:build',
+  lib: {
+    build: 'lib:build',
+  },
 };
 
 const args_ = process.argv.slice(2);
 
-const pkgArgDetected = args_.length === 1 && (args_[0] === userAppArg.devBuild || args_[0] === userAppArg.prodBuild);
+const pkgArgDetected =
+  args_.length === 1 &&
+  (args_[0] === userAppArg.devBuild ||
+    args_[0] === userAppArg.prodBuild ||
+    args_[0] === userAppArg.lib.build);
 
 if (pkgArgDetected) {
-  const isProd = args_[0] === userAppArg.prodBuild;
+  const isProd = args_[0] !== userAppArg.devBuild;
   const mode = isProd ? 'production' : 'development';
 
   // ------------------------------------------------------------------------------
@@ -90,18 +107,28 @@ if (pkgArgDetected) {
     },
   });
 
+  const tscPathForRelevantOS = isWindowsOS
+    ? `tsc${windowsCmdextension}`
+    : tscPath; // This check makes it compatible with Windows OS (in production)
+  //-
+  const tscAliasPath = path.join(internalModulesPath, '.bin', 'tsc-alias');
+  const tscAliasPathForRelevantOS = isWindowsOS
+    ? `tsc-alias${windowsCmdextension}`
+    : tscAliasPath; // This check makes it compatible with Windows OS (in production)
+  //-
   spawnChildProcess.on('exit', (code) => {
     if (code === 0 && isProd) {
       console.log('============================================\n');
-      console.log('[PROD] Bundling complete.\n[PROD] Generating type definitions...');
+      console.log(
+        '[PROD] Bundling complete.\n[PROD] Generating type definitions...',
+      );
       try {
         // --------------------------------------------------------------
         // Execute the ENGINE'S internal tsc relative to the user project
         // --------------------------------------------------------------
-        // Run tsc to generate .d.ts files into the 'build' folder
+        // Run tsc to generate .d.ts files into the buildOutputFolder
         // Using the user app's local tsc
         // -------------------------------------------------------
-        const tscPathForRelevantOS = isWindowsOS ? `tsc${windowsCmdextension}` : tscPath; // This check makes it compatible with Windows OS (in production)
         execSync(`${tscPathForRelevantOS} --emitDeclarationOnly`, {
           stdio: 'inherit',
           env: {
@@ -123,6 +150,95 @@ if (pkgArgDetected) {
         });
       }
       console.log('');
+
+      //-------------------------------------------------------------------
+      // Take note that although this typescript import alias code has been
+      // left to always show up in the console when the prod build command
+      // runs; it particularly solves errors/issues when "paths" object is
+      // detected in tsconfig files, with @ imports specified therein.
+      //-------------------------------------------------------------------
+      console.log('===============================================\n');
+      console.log('[PROD] Resolving Typescript @ import aliases...');
+      try {
+        execSync(`${tscAliasPathForRelevantOS}`, {
+          stdio: 'inherit',
+          env: {
+            ...process.env,
+            NODE_PATH: internalModulesPath,
+          },
+        });
+        //-
+        console.log(
+          '[PROD] Typescript @ import aliases resolved successfully.',
+        );
+      } catch {
+        blocksTerminalLogger({
+          internalPackage: {
+            fullName: internalPkgJSON.name,
+          },
+          userApp: {
+            fullName: userAppPkgJSON.name,
+            errorMessage: 'Typescript @ import aliases resolution failed',
+          },
+          errorSource: true,
+          suggestion: {
+            // prettier-ignore
+            messageList: [
+              `→ Check that your (main) tsconfig.json has "outDir" set to "./${buildOutputFolderName}"`,
+            ],
+          },
+          processExit: true,
+        });
+      }
+      console.log('');
+
+      // -------------------------------------------
+      // Extra build step/process for libraries only
+      // -------------------------------------------
+      const rimrafPath = path.join(internalModulesPath, '.bin', 'rimraf');
+      const rimrafPathForRelevantOS = isWindowsOS
+        ? `rimraf${windowsCmdextension}`
+        : rimrafPath; // This check makes it compatible with Windows OS (in production)
+      //-
+      const supportingTSconfigPath = path.join(
+        userAppRoot,
+        supportingTSconfigName,
+      );
+      //-
+      if (fs.existsSync(supportingTSconfigPath)) {
+        const distProdFolderPath = path.join(userAppRoot, distProdFolderName);
+        //-
+        const isLibBuildArg = args_[0] === userAppArg.lib.build;
+        //-
+        if (isLibBuildArg) {
+          try {
+            execSync(
+              `${rimrafPathForRelevantOS} ${distProdFolderPath} && ${tscPathForRelevantOS} -p ${supportingTSconfigPath} && ${tscAliasPathForRelevantOS} -p ${supportingTSconfigPath}`,
+              {
+                stdio: 'inherit',
+                shell: true, // CRITICAL: Makes && and paths work on Windows OS
+                env: {
+                  ...process.env,
+                  NODE_PATH: internalModulesPath,
+                },
+              },
+            );
+            console.log('============================================\n');
+            console.log(
+              `[PROD] ${distProdFolderName} output folder built successfully.`,
+            );
+            console.log('');
+          } catch (e) {
+            blocksTerminalLogger({
+              internalPackage: {
+                fullName: internalPkgJSON.name,
+                errorMessage: `${distProdFolderName} output folder build failed.`,
+              },
+              originalErrorMessage: e,
+            });
+          }
+        }
+      }
     }
     process.exit(code || 0);
   });

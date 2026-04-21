@@ -14,6 +14,7 @@ import { merge } from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 
 export {
   //-
@@ -35,4 +36,5 @@ export {
   TerserPlugin,
   BundleAnalyzerPlugin,
   HtmlWebpackPlugin,
+  TsconfigPathsPlugin,
 };
