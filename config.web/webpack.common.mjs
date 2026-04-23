@@ -203,7 +203,6 @@ export const getDynamicChunkFileName = ({ pathData, mode }) => {
 // -------------------------------------------------------------
 const supportingTSconfigPath = path.join(userAppRoot, supportingTSconfigName);
 
-
 export default {
   // ----------------------------------------------------------
   // Ensure Webpack knows we are working on the User app's code
@@ -265,12 +264,12 @@ export default {
   resolve: {
     plugins: [
       ...(fs.existsSync(supportingTSconfigPath)
-      ? [
-          new TsconfigPathsPlugin({
-            configFile: supportingTSconfigPath, // Prevent Typescript @ import alias error: read user app's @ aliases automatically!
-          })
-        ]
-      : []),
+        ? [
+            new TsconfigPathsPlugin({
+              configFile: supportingTSconfigPath, // Prevent Typescript @ import alias error: read user app's @ aliases automatically!
+            }),
+          ]
+        : []),
     ],
     extensions: [_default.fileExtension, '.js', '.mjs', '.json'], // TODO: [Maybe later if needed] | Add these other extensions to the array: '.tsx', '.jsx'
     alias: {
