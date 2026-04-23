@@ -279,6 +279,12 @@ export default {
       // Add more alias here when you have more libraries to access from within the main web user app
       //---------------------------------------------------------------------------------------------
       '@build-in-blocks/dom.autoquery': path.resolve(userAppRoot, 'node_modules/@build-in-blocks/dom.autoquery/dist.prod'),
+
+      //--------------------------------------------------------------------------------------------------
+      // Dynamic imports: ts-alias library doesn't take care of typescript's @ import from dynamic imports
+      // We therefor need to map the internal library alias to the actual compiled folder
+      //--------------------------------------------------------------------------------------------------
+      '@_queries': path.resolve(userAppRoot, 'node_modules/@build-in-blocks/dom.autoquery/dist.prod/queries'),
     },
     // --------------------------------------
     // Helps to resolve standard dependencies
