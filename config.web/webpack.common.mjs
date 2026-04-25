@@ -2,7 +2,7 @@ import { fs, path, pathToFileURL, register, webpack, HtmlWebpackPlugin, Tsconfig
 //-
 import { _default, blocksTerminalLogger } from '../config.root/blocks.packages.js';
 //-
-import { require, __dirname, internalPkgJSON, supportingTSconfigName } from '../config.root/root.js';
+import { require, __dirname, internalPkgJSON, mainTSconfigFileName, supportingTSconfigFileName } from '../config.root/root.js';
 //-
 import { validateMainEntryFilePathInUserApp } from './validate/userapp.validate.js';
 //-
@@ -201,7 +201,7 @@ export const getDynamicChunkFileName = ({ pathData, mode }) => {
 // Libraries only: supportingTSconfigPath location from user app
 // Related to Typescript @ import alias error prevention
 // -------------------------------------------------------------
-const supportingTSconfigPath = path.join(userAppRoot, supportingTSconfigName);
+const supportingTSconfigPath = path.join(userAppRoot, supportingTSconfigFileName);
 
 export default {
   // ----------------------------------------------------------
@@ -226,7 +226,7 @@ export default {
             // -----------------------------------------
             // Point to the user app's config explicitly
             // -----------------------------------------
-            configFile: path.resolve(userAppRoot, 'tsconfig.json'),
+            configFile: path.resolve(userAppRoot, mainTSconfigFileName),
             //----------------------------------------------
             // This ensures ts-loader uses the version of TS
             // that sits right next to it in your engine.
