@@ -9,15 +9,20 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const internalProjectRoot = path.join(__dirname, '../', 'package.json');
-const internalPkgJSON = JSON.parse(fs.readFileSync(internalProjectRoot, 'utf-8'));
+const internalPkgJSON = JSON.parse(
+  fs.readFileSync(internalProjectRoot, 'utf-8'),
+);
 
 const isWindowsOS = process.platform === 'win32';
 const windowsCmdextension = '.cmd';
 
 const buildOutputFolderName = 'build';
+const distOutputFolderName = 'dist';
+
+const mainTSconfigFileName = 'tsconfig.json';
 
 const distProdFolderName = 'dist.prod';
-const supportingTSconfigName = 'tsconfig.build.json';
+const supportingTSconfigFileName = 'tsconfig.build.json';
 
 export {
   //-------------------------------
@@ -34,7 +39,10 @@ export {
   windowsCmdextension,
   //-
   buildOutputFolderName,
+  distOutputFolderName,
+  //-
+  mainTSconfigFileName,
   //-
   distProdFolderName,
-  supportingTSconfigName,
+  supportingTSconfigFileName,
 };
