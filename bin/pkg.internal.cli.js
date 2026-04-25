@@ -4,17 +4,7 @@ import { fs, path, spawn, execSync } from '../config.root/external.packages.js';
 
 import { blocksTerminalLogger } from '../config.root/blocks.packages.js';
 //-
-import {
-  require,
-  __dirname,
-  internalPkgJSON,
-  isWindowsOS,
-  windowsCmdextension,
-  distProdFolderName,
-  mainTSconfigFileName,
-  supportingTSconfigFileName,
-  buildOutputFolderName,
-} from '../config.root/root.js';
+import { require, __dirname, internalPkgJSON, isWindowsOS, windowsCmdextension, distProdFolderName, mainTSconfigFileName, supportingTSconfigFileName, buildOutputFolderName } from '../config.root/root.js';
 //-
 import { renameRootTypeFileInBuildOutputFolder } from './helper/rename-root-type.js';
 import { userAppPkgJSON, userAppRoot } from '../config.web/webpack.common.mjs';
@@ -30,11 +20,7 @@ const userAppArg = {
 
 const args_ = process.argv.slice(2);
 
-const pkgArgDetected =
-  args_.length === 1 &&
-  (args_[0] === userAppArg.devBuild ||
-    args_[0] === userAppArg.prodBuild ||
-    args_[0] === userAppArg.lib.build);
+const pkgArgDetected = args_.length === 1 && (args_[0] === userAppArg.devBuild || args_[0] === userAppArg.prodBuild || args_[0] === userAppArg.lib.build);
 
 if (pkgArgDetected) {
   const isProd = args_[0] !== userAppArg.devBuild;
@@ -108,21 +94,15 @@ if (pkgArgDetected) {
     },
   });
 
-  const tscPathForRelevantOS = isWindowsOS
-    ? `tsc${windowsCmdextension}`
-    : tscPath; // This check makes it compatible with Windows OS (in production)
+  const tscPathForRelevantOS = isWindowsOS ? `tsc${windowsCmdextension}` : tscPath; // This check makes it compatible with Windows OS (in production)
   //-
   const tscAliasPath = path.join(internalModulesPath, '.bin', 'tsc-alias');
-  const tscAliasPathForRelevantOS = isWindowsOS
-    ? `tsc-alias${windowsCmdextension}`
-    : tscAliasPath; // This check makes it compatible with Windows OS (in production)
+  const tscAliasPathForRelevantOS = isWindowsOS ? `tsc-alias${windowsCmdextension}` : tscAliasPath; // This check makes it compatible with Windows OS (in production)
   //-
   spawnChildProcess.on('exit', (code) => {
     if (code === 0 && isProd) {
       console.log('============================================\n');
-      console.log(
-        '[PROD] Bundling complete.\n[PROD] Generating type definitions...',
-      );
+      console.log('[PROD] Bundling complete.\n[PROD] Generating type definitions...');
       try {
         // --------------------------------------------------------------
         // Execute the ENGINE'S internal tsc relative to the user project
@@ -169,9 +149,7 @@ if (pkgArgDetected) {
           },
         });
         //-
-        console.log(
-          '[PROD] Typescript @ import aliases resolved successfully.',
-        );
+        console.log('[PROD] Typescript @ import aliases resolved successfully.');
       } catch {
         blocksTerminalLogger({
           internalPackage: {
@@ -197,14 +175,9 @@ if (pkgArgDetected) {
       // Extra build step/process for libraries only
       // -------------------------------------------
       const rimrafPath = path.join(internalModulesPath, '.bin', 'rimraf');
-      const rimrafPathForRelevantOS = isWindowsOS
-        ? `rimraf${windowsCmdextension}`
-        : rimrafPath; // This check makes it compatible with Windows OS (in production)
+      const rimrafPathForRelevantOS = isWindowsOS ? `rimraf${windowsCmdextension}` : rimrafPath; // This check makes it compatible with Windows OS (in production)
       //-
-      const supportingTSconfigPath = path.join(
-        userAppRoot,
-        supportingTSconfigFileName,
-      );
+      const supportingTSconfigPath = path.join(userAppRoot, supportingTSconfigFileName);
       //-
       if (fs.existsSync(supportingTSconfigPath)) {
         const distProdFolderPath = path.join(userAppRoot, distProdFolderName);
@@ -213,21 +186,16 @@ if (pkgArgDetected) {
         //-
         if (isLibBuildArg) {
           try {
-            execSync(
-              `${rimrafPathForRelevantOS} ${distProdFolderPath} && ${tscPathForRelevantOS} -p ${supportingTSconfigPath} && ${tscAliasPathForRelevantOS} -p ${supportingTSconfigPath}`,
-              {
-                stdio: 'inherit',
-                shell: true, // CRITICAL: Makes && and paths work on Windows OS
-                env: {
-                  ...process.env,
-                  NODE_PATH: internalModulesPath,
-                },
+            execSync(`${rimrafPathForRelevantOS} ${distProdFolderPath} && ${tscPathForRelevantOS} -p ${supportingTSconfigPath} && ${tscAliasPathForRelevantOS} -p ${supportingTSconfigPath}`, {
+              stdio: 'inherit',
+              shell: true, // CRITICAL: Makes && and paths work on Windows OS
+              env: {
+                ...process.env,
+                NODE_PATH: internalModulesPath,
               },
-            );
+            });
             console.log('============================================\n');
-            console.log(
-              `[PROD] ${distProdFolderName} output folder built successfully.`,
-            );
+            console.log(`[PROD] ${distProdFolderName} output folder built successfully.`);
             console.log('');
           } catch (e) {
             blocksTerminalLogger({
