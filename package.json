@@ -11,9 +11,9 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
+    "prepare": "blocks.pkg.dev.setup dev:husky:setup:git",
     "eslint:lint": "eslint .",
-    "prettier:format": "prettier --write \"**/*.{mjs,js,ts,css,html}\"",
-    "prepare": "husky"
+    "prettier:format": "prettier --write \"**/*.{mjs,ts,js,json,html,css,scss}\""
   },
   "dependencies": {
     "html-webpack-plugin": "^5.6.6",
@@ -32,15 +32,8 @@
   },
   "devDependencies": {
     "@build-in-blocks/dev.resources": "1.0.4",
-    "@build-in-blocks/dev.setup": "1.0.2",
-    "@eslint/js": "^10.0.1",
-    "@types/webpack-bundle-analyzer": "^4.7.0",
-    "eslint": "^10.0.3",
-    "eslint-config-prettier": "^10.1.8",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.3.3",
-    "prettier": "^3.8.1",
-    "typescript-eslint": "^8.57.0"
+    "@build-in-blocks/dev.setup": "1.0.5",
+    "@types/webpack-bundle-analyzer": "^4.7.0"
   },
   "homepage": "https://github.com/build-in-blocks/dev.build#readme",
   "bugs": {
