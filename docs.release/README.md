@@ -17,6 +17,12 @@
 
 #
 
+#### This library
+
+- Don't forget to include or add all needed folders & files **in production** to the `package.json`'s `files array` before publishing.
+
+#
+
 #### Build in blocks libraries in general
 
 - **Update contributors list:** Check to see that all contributors who contributed to the success of the new release have been added to the **contributors list** on the **root README**.
@@ -25,7 +31,7 @@
 
 - **General user guide update:** Check that the wiki for the general user guide has been updated when e.g. typescript version and compatibility has changed in the library's code, or a new **@build-in-blocks** library has been published etc.
 
-- **Confirm package.json & docs content:** Always confirm that the content of the `package.json` (`scripts`, the `keywords` array etc.), as well as the **root README**, **user docs**, **contributor docs** and **release docs** content are in good/acceptable shape for the release.
+- **Confirm package.json & docs content:** Always confirm that the content of the `package.json` (`scripts`, the `keywords` array, the `files` array etc.), as well as the **root README**, **user docs**, **contributor docs** and **release docs** content are in good/acceptable shape for the release.
 
 - **Version bumping:** Pending the time when we will automate the version bumping process, always remember to update the version number to a new one in the `package.json` file.
 

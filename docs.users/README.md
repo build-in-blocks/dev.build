@@ -52,21 +52,21 @@ If you don't add a `blocks.config.ts` file at the root of your web app or web li
 
 To use your own preferred settings, add a `blocks.config.ts` file at the root of your web app or web library project. For example:
 
-````
-  import { BlocksConfig } from '@build-in-blocks/dev.resources';
+````ts
+import { BlocksConfig } from '@build-in-blocks/dev.resources';
 
-  const blocksConfig: BlocksConfig = {
-    devBuild: {
-      srcCodeFolder: 'app',
-      entryFileName: 'main',
-        devServer: {
-            port: 5800,
-            open: true,
-        }
-    },
-  };
+const blocksConfig: BlocksConfig = {
+  devBuild: {
+    srcCodeFolder: 'app',
+    entryFileName: 'main',
+    devServer: {
+      port: 5800,
+      open: true,
+    }
+  },
+};
 
-  export default blocksConfig;
+export default blocksConfig;
 ````
 
 > [!NOTE]  
@@ -81,7 +81,7 @@ To use your own preferred settings, add a `blocks.config.ts` file at the root of
 
 E.g. copy this code and put it inside `your-source-code-folder-name-here/dummy/console.ts` file:
 
-````
+````ts
 export const dummyConsole = () => {
   console.log('1. dummy CONSOLE module!');
 }
@@ -89,7 +89,7 @@ export const dummyConsole = () => {
 
 Also copy this code and put it inside `your-source-code-folder-name-here/dummy/example.ts` file:
 
-````
+````ts
 export const dummyLazyLoadExample = () => {
   console.log('2. dummy EXAMPLE - LAZY LOADED module! YAY!');
 }
@@ -97,13 +97,13 @@ export const dummyLazyLoadExample = () => {
 
 Add the lazy load button in your your `index.html` file:
 
-````
+````html
 <button id="lazy-load-me">Click me to lazy load the example module!</button>
 ````
 
 Call them else where (e.g. your `.ts` entry file) using dynamic import, so that it gets split into a separate output file:
 
-````
+````ts
 const app = async() => {
   //-------------------------------------------------
   // This module loads immediately the web page loads
@@ -143,13 +143,13 @@ Observe your browser dev tool's `console` and `network` tabs to see that the fir
 
 Add this app mode element in your your `index.html` file:
 
-````
+````html
 <h3>mode: <span id="app-mode"></span></h3>
 ````
 
 Add this to your web app's entry file to see your app's metadata:
 
-````
+````ts
 //------------------------------------
 // Function to get your web app's info
 //------------------------------------

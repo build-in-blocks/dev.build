@@ -40,7 +40,7 @@ Follow the instructions to fork and clone this repository locally unto your comp
 
 - **Folder structure:** On your computer, create a new parent folder or go to an existing folder that you will like to be the parent, for both this library and your web app (or web library). Make sure your cloned `dev.build` repo folder and your web app (or web library) are inside the parent folder, so that the structure looks like this:
 
-    ````
+    ````bash
     PARENT-FOLDER/
     ├── dev.build/
     └── your-web-app-or-web-library/
@@ -50,31 +50,31 @@ Follow the instructions to fork and clone this repository locally unto your comp
 
     Install dependencies:
 
-    ```
+    ````bash
     npm install
-    ```
+    ````
 
     Link library:
 
-    ```
+    ````bash
     npm link
-    ```
+    ````
     > [!NOTE]  
     > You can comment out  `'--no-deprecation'` flag used in the webpack args, in the `pkg.internal.cli.js` file when developing locally (just for debugging purpose when needed, make sure to not commit and push this change to git).
 
 - **For your web app (or web library):** Open a terminal specifically for your web app (or web library), cd into the root of your web app (or web library).
     - **Step 1:** First install the npm dependencies in your web app (or web library).
-    - **Step 2:** Add this to your web app (or web library)'s package.json dependencies (take note incase library version changes in the future: use the exact version number in the `@build-in-blocks/dev.build` library's `package.json`. At the time of writing, it is 1.0.0):
+    - **Step 2:** Add this to your web app (or web library)'s `package.json` dependencies (take note incase library version changes in the future: use the exact version number in the `@build-in-blocks/dev.build` library's `package.json`. At the time of writing, it is 1.0.0):
 
-        ```
+        ````json
         "@build-in-blocks/dev.build": "1.0.0"
-        ```
+        ````
 
         Link your app to the library:
 
-        ```
+        ````bash
         npm link ../dev.build
-        ```
+        ````
 
     - **Step 3:** Follow the usage instructions in the [root README.md](https://github.com/build-in-blocks/dev.build), not from the beginning though; start from the **2. Typescript config setup** section (and continue till the end).
 
