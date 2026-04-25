@@ -1,6 +1,6 @@
 # @build-in-blocks/dev.build
 
-![Latest Version](https://img.shields.io/npm/v/@build-in-blocks/dev.build.svg?label=latest&color=brightgreen&style=flat-square) ![NPM Downloads](https://img.shields.io/npm/d18m/%40build-in-blocks%2Fdev.build?color=blue&label=downloads%20(last%2018%20months)) ![build passing](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)
+![Latest Version](https://img.shields.io/npm/v/@build-in-blocks/dev.build.svg?label=latest&color=brightgreen&style=flat-square) ![NPM Downloads](https://img.shields.io/npm/d18m/%40build-in-blocks%2Fdev.build?color=blue&label=downloads%20(last%2018%20months)) ![build passing](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square&label=Blocks%20CI)
 
 [![License: AGPL v3.0](https://img.shields.io/badge/license-AGPL%20v3.0-blue.svg?style=flat-square)](https://www.gnu.org/licenses/agpl-3.0) [![All Contributors](https://img.shields.io/github/all-contributors/build-in-blocks/dev.build?color=ee8449&style=flat-square)](#contributors) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/build-in-blocks/dev.build/blob/develop/docs.contributors/README.md)
 
@@ -10,7 +10,7 @@
 
 #
 
-**Supported Node.js versions:** Node.js v20.x, v22.x, v24.x and v25.x - Monitored by central Blocks CI from [@build-in-blocks/dev.setup](https://www.npmjs.com/package/@build-in-blocks/dev.setup)
+**Supported Node.js versions:** Node.js v20.x, v22.x, v24.x and v25.x
 
 #
 
@@ -43,13 +43,13 @@
 
 - Install our dev build package as a `devDependency` in your project:
 
-  ````
+  ````bash
   npm install -D @build-in-blocks/dev.build --save-exact
   ````
 
 - Also make sure to install the resources package, as this will be useful later (also so that your web app code can compile successfully without errors):
   
-  ````
+  ````bash
   npm install -D @build-in-blocks/dev.resources --save-exact
   ````
 
@@ -59,12 +59,13 @@
 
 - Just create a `tsconfig.json` file at the root of your web project, and add these:
 
-  ````
+  ````json
   {
     "extends": "@build-in-blocks/dev.build/tsconfig.base.json",
     "compilerOptions": {
-      "declarationDir": "./build",
       "rootDir": "./src",
+      "outDir": "./build",
+      "declarationDir": "./build",
       "checkJs": false,
       "skipLibCheck": true,
     },
@@ -78,7 +79,7 @@
 
   - For `macOS` and `linux`, use:
 
-    ````
+    ````json
     "scripts": {
       "dev": "blocks.pkg.dev.build dev:build",
       "build": "blocks.pkg.dev.build prod:build"
@@ -88,7 +89,7 @@
 
   - For `windows OS`, use:
 
-    ````
+    ````json
     "scripts": {
       "dev": "blocks.pkg.dev.build.cmd dev:build",
       "build": "blocks.pkg.dev.build.cmd prod:build"
@@ -98,7 +99,7 @@
 
 - **You need this too:** Add these in the your web project's `package.json` file too:
 
-  ````
+  ````json
   {
     "type": "module",
     "sideEffects": false,
@@ -114,7 +115,7 @@
 - **Option 1 - Default webpack entry file path:** If you create or use a `src/index.ts` file in your web project, the library will assume that you don't wish to change your `webpack` entry file path and want to stick to the default.
 - **option 2 - Override the default with your preferred entry file path:** If you prefer e.g. `app/main.ts` to be your project's `webpack` entry file path, create a `blocks.config.ts` file at the root of your web project and add this code in there:
 
-  ````
+  ````ts
   import { BlocksConfig } from '@build-in-blocks/dev.resources';
 
   const blocksConfig: BlocksConfig = {
@@ -141,13 +142,13 @@ If you plan to run your web project in the browser, add a main `index.html` file
 
 - **Local development build:** `Webpack` will now watch your source code folder as you make changes to its content, and will also generate/update the `dist` output folder, when you run the `dev` script command:
 
-  ````
+  ````bash
   npm run dev
   ````
 
 - **Production build:** Run the `build` script command, anytime you need to generate/update your production build i.e. the `build` output folder:
   
-  ````
+  ````bash
   npm run build
   ````
 
