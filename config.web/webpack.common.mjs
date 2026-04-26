@@ -166,30 +166,55 @@ const contentHashExtension = ({ mode }) => (mode === 'prod' ? '.[contenthash:8]'
 //-
 const chunkFilename = ({ mode }) => `${isAllowedBlocksPackage ? `chunks.${actualPackageName}` : 'chunks'}/[name]${contentHashExtension({ mode })}.js`;
 //-
+const BlocksDynamicChunkFileNamingPlugin = {
+  apply: (compiler) => {
+    compiler.hooks.compilation.tap('BlocksDynamicChunkFileNamingPlugin', (compilation) => {
+      //---------------------------------------------------------------------------
+      // Using chunkIds ensures the runtime map in index.js knows about the folders
+      //---------------------------------------------------------------------------
+      compilation.hooks.chunkIds.tap('BlocksDynamicChunkFileNamingPlugin', (chunks) => {
+        chunks.forEach((chunk) => {
+          //---------------------------------------------------------------------------
+          // First get the absolute path to your main web user app's source code folder
+          //---------------------------------------------------------------------------
+          const mainBlocksWebAppPath = path.resolve(userAppRoot, userAppSrcCodeFolder);
+          //------------------------------------------------------------------------------
+          // Get all modules in this chunk. Then find the needed resources i.e. if it's
+          // not in the source code folder of the main web user app, then it's an external
+          // library used in the main web user app.
+          //------------------------------------------------------------------------------
+          const __chunkModules__ = compilation.chunkGraph.getChunkModules(chunk);
+          const externalModule = __chunkModules__.find((m) => m.resource && !m.resource.startsWith(mainBlocksWebAppPath));
+          //------------------------------------------------------------------------
+          // Work with the "supporting build folder" i.e. dist.prod (from within the
+          // "allowedBlocksPackages") to locate the "externalResourcePackageName".
+          //------------------------------------------------------------------------
+          if (externalModule) {
+            const resource = externalModule.resource;
+            const externalResourceLocalPath = resource.split(/[\\/]dist\.prod/)[0];
+            const externalResourcePackageName = allowedBlocksPackages.find((packageName) => externalResourceLocalPath.endsWith(packageName));
+            //-
+            if (externalResourcePackageName) {
+              //-------------------------------------------------
+              // Attach the metadata directly to the chunk object
+              //-------------------------------------------------
+              chunk.blocksPackageName = externalResourcePackageName;
+            }
+          }
+        });
+      });
+    });
+  },
+};
+//-
 export const getDynamicChunkFileName = ({ pathData, mode }) => {
-  //---------------------------------------------------------------------------
-  // First get the absolute path to your main web user app's source code folder
-  //---------------------------------------------------------------------------
-  const mainBlocksWebAppPath = path.resolve(userAppRoot, userAppSrcCodeFolder);
-  //------------------------------------------------------------------------------
-  // Get all modules in this chunk. Then find the needed resources i.e. if it's
-  // not in the source code folder of the main web user app, then it's an external
-  // library used in the main web user app.
-  //------------------------------------------------------------------------------
-  const chunkModules = Array.from(pathData.chunk.modulesIterable || []);
-  const externalModule = chunkModules.find((m) => m.resource && !m.resource.startsWith(mainBlocksWebAppPath));
   //--------------------------------------------------------------------------------------
   // In the main web user app's build output, make the chunks from such external libraries
   // reside in the folder named after a particular external library
   //--------------------------------------------------------------------------------------
-  if (externalModule) {
-    const resource = externalModule.resource;
-    const externalResourceLocalPath = resource.split(/[\\/]dist\.prod/)[0];
-    const externalResourcePackageName = allowedBlocksPackages.find((packageName) => externalResourceLocalPath.endsWith(packageName));
-    //-
-    if (externalResourcePackageName) {
-      return `chunks/${externalResourcePackageName}/[name]${contentHashExtension({ mode })}.js`;
-    }
+  const _externalResourcePackageName = pathData.chunk.blocksPackageName;
+  if (_externalResourcePackageName) {
+    return `chunks/${_externalResourcePackageName}/[name]${contentHashExtension({ mode })}.js`;
   }
   //-----------------------------------------------
   // Every other scenario uses this chunk file name
@@ -316,6 +341,7 @@ export default {
     outputModule: true, // Required by Webpack 5 for ESM output
   },
   plugins: [
+    BlocksDynamicChunkFileNamingPlugin,
     customMetaDataPluginForUserApp,
 
     // ----------------------------------------------------------------------------------------------------------------------------
