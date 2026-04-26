@@ -40,7 +40,32 @@ if (pkgArgDetected) {
   // ---------------------------------------------
   // The path to YOUR internal node_modules folder
   // ---------------------------------------------
-  const internalModulesPath = path.resolve(__dirname, '../node_modules');
+  const engineRoot = path.resolve(__dirname, '..');
+  const internalModulesPath = path.resolve(engineRoot, 'node_modules');
+
+  // -----------------------------------------------
+  // Safely find binary paths for the internal tools
+  // -----------------------------------------------
+  const getBinPath = (pkgName) => {
+    //-----------------------------------------------------------------
+    // A. Look in the User App's .bin (Production or hoisted)
+    // B. Look in the Engine's .bin (Development i.e. local npm link)
+    // C. Return the .bin path that match based on environment detected
+    //-----------------------------------------------------------------
+    const paths = [path.resolve(userAppRoot, 'node_modules/.bin', pkgName), path.resolve(engineRoot, 'node_modules/.bin', pkgName)];
+
+    const found = paths.find((p) => fs.existsSync(p));
+
+    if (!found) {
+      throw new Error(`Binary for ${pkgName} not found. Try 'npm install'`);
+    }
+
+    return found;
+  };
+  //-
+  const tscAliasBin = getBinPath('tsc-alias');
+  const rimrafBin = getBinPath('rimraf');
+
   //---------------------------------------------------------------
   // Let Node's resolution engine find where typescript is actually
   // installed, in order to find and use TSC (from path) from this
@@ -103,8 +128,7 @@ if (pkgArgDetected) {
 
   const tscPathForRelevantOS = isWindowsOS ? `tsc${windowsCmdextension}` : tscPath; // This check makes it compatible with Windows OS (in production)
   //-
-  const tscAliasPath = path.join(internalModulesPath, '.bin', 'tsc-alias');
-  const tscAliasPathForRelevantOS = isWindowsOS ? `tsc-alias${windowsCmdextension}` : tscAliasPath; // This check makes it compatible with Windows OS (in production)
+  const tscAliasBinCmd = isWindowsOS ? `tsc-alias${windowsCmdextension}` : `node "${tscAliasBin}"`; // This check makes it compatible with Windows OS (in production)
   //-
   spawnChildProcess.on('exit', (code) => {
     if (code === 0 && isProd) {
@@ -148,7 +172,7 @@ if (pkgArgDetected) {
       console.log('===============================================\n');
       console.log('[PROD] Resolving Typescript @ import aliases...');
       try {
-        execSync(`${tscAliasPathForRelevantOS}`, {
+        execSync(`${tscAliasBinCmd}`, {
           stdio: 'inherit',
           env: {
             ...process.env,
@@ -181,8 +205,7 @@ if (pkgArgDetected) {
       // -------------------------------------------
       // Extra build step/process for libraries only
       // -------------------------------------------
-      const rimrafPath = path.join(internalModulesPath, '.bin', 'rimraf');
-      const rimrafPathForRelevantOS = isWindowsOS ? `rimraf${windowsCmdextension}` : rimrafPath; // This check makes it compatible with Windows OS (in production)
+      const rimrafBinCmd = isWindowsOS ? `rimraf${windowsCmdextension}` : `node "${rimrafBin}"`; // This check makes it compatible with Windows OS (in production)
       //-
       const supportingTSconfigPath = path.join(userAppRoot, supportingTSconfigFileName);
       //-
@@ -193,7 +216,7 @@ if (pkgArgDetected) {
         //-
         if (isLibBuildArg) {
           try {
-            execSync(`${rimrafPathForRelevantOS} ${distProdFolderPath} && ${tscPathForRelevantOS} -p ${supportingTSconfigPath} && ${tscAliasPathForRelevantOS} -p ${supportingTSconfigPath}`, {
+            execSync(`${rimrafBinCmd} ${distProdFolderPath} && ${tscPathForRelevantOS} -p ${supportingTSconfigPath} && ${tscAliasBinCmd} -p ${supportingTSconfigPath}`, {
               stdio: 'inherit',
               shell: true, // CRITICAL: Makes && and paths work on Windows OS
               env: {
