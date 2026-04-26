@@ -1,6 +1,6 @@
 {
   "name": "@build-in-blocks/dev.build",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Production and development bundler build setup for your typescript web-related projects.",
   "type": "module",
   "bin": {
