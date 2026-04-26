@@ -7,8 +7,15 @@ import { blocksTerminalLogger } from '../config.root/blocks.packages.js';
 import { require, __dirname, internalPkgJSON, isWindowsOS, windowsCmdextension, distProdFolderName, mainTSconfigFileName, supportingTSconfigFileName, buildOutputFolderName } from '../config.root/root.js';
 //-
 import { renameRootTypeFileInBuildOutputFolder } from './helper/rename-root-type.js';
-import { userAppPkgJSON, userAppRoot } from '../config.web/webpack.common.mjs';
 //-
+
+//-------------------------------------------------------------------------
+// Work from user app's root | Declaring it here again instead of importing
+// them from webpack config to prevent webpack-related depreciation errors
+//-------------------------------------------------------------------------
+export const userAppRoot = process.cwd();
+export const userAppPkgJSON = JSON.parse(fs.readFileSync(path.join(userAppRoot, 'package.json'), 'utf-8'));
+//-------------------------------------------------------------------------
 
 const userAppArg = {
   devBuild: 'dev:build',
